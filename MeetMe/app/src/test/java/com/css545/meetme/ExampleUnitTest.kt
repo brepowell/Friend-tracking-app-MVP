@@ -1,4 +1,4 @@
-package com.example.meetme
+package com.css545.meetme
 
 import org.junit.Test
 

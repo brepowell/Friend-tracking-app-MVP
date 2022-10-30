@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">MeetMe</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="back_button">Back</string>
 </resources>
