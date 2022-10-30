@@ -9,10 +9,14 @@ import androidx.compose.material.Button
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit) {
+fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
+                        onConsentButtonClicked: () -> Unit
+                        )
+{
     Column {
         Text("Start Tracking screen")
-        StartTrackingButton(onClick = { onStartTrackingButtonClicked() })
+        StartTrackingButton(onClick = onStartTrackingButtonClicked)
+        ConsentButton(onClick = onConsentButtonClicked)
     }
 }
 
@@ -26,5 +30,18 @@ fun StartTrackingButton(
         modifier = modifier.widthIn(min = 250.dp)
     ) {
         Text("Start Tracking")
+    }
+}
+
+@Composable
+fun ConsentButton (
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.widthIn(min = 250.dp)
+    ) {
+       Text("Consent")
     }
 }
