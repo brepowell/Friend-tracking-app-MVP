@@ -123,13 +123,13 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
         Spacer(modifier = Modifier.height(48.dp))
 
         //Buttons
-        StartTrackingButton(onClick = onStartTrackingButtonClicked)
+        InviteToStartTrackingButton(onClick = onStartTrackingButtonClicked)
         ConsentButton(onClick = onConsentButtonClicked)
     }
 }
 
 @Composable
-fun StartTrackingButton(
+fun InviteToStartTrackingButton(
     onClick: () -> Unit,
     //modifier: Modifier = Modifier
 ) {
