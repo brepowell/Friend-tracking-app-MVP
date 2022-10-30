@@ -19,4 +19,11 @@
     <string name="tracking_start_bill_amount">Bill amount: %s </string>
     <string name="tracking_start_send_invite">Send Invitation</string>
 
+    <!--Confirmation limbo text: -->
+    <string name="tracking_handshake_notification">Your friend %s has invited you to a tracking session</string>
+    <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
+    <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
+    <string name="agree">Yes</string>
+    <string name="disagree">No</string>
+
 </resources>
