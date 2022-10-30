@@ -11,7 +11,7 @@
 
     <!--Start tracking text: -->
     <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
-    <string name="tracking_start_button">Start Tracking</string>
+    <string name="tracking_start_button">Send Invitation to Start Tracking</string>
     <string name="tracking_start_friends">Friend(s) to invite: </string>
     <string name="tracking_start_duration">Enter tracking duration: </string>
     <string name="tracking_start_units_hours">Hours</string>
