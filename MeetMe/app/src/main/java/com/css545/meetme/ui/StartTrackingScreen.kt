@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.NumberFormat
+//import java.time.LocalDateTime
+//import java.time.format.DateTimeFormatter
 
 @Composable
 fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
@@ -23,8 +25,10 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
 {
     var amountInput by remember { mutableStateOf("") }
     //toDoubleOrNull converts an int to a double
-    val time = amountInput.toDoubleOrNull() ?: 0.0
-    val bill = billCalculator(time)
+    val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
+    val bill = billCalculator(trackingDuration)
+    val timeExpiration = "5:00 PM PST"
+
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)){
@@ -50,7 +54,8 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
 
         //Tracking Duration - header above text field
         Text(
-            text = stringResource(id = com.css545.meetme.R.string.tracking_start_duration),
+            text = stringResource(
+                id = com.css545.meetme.R.string.tracking_start_duration),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
@@ -58,6 +63,16 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
         //TextField to enter the hours
         TimeLimitEntryField(amountInput, onValueChange = {amountInput = it})
         Spacer(modifier = Modifier.height(24.dp))
+
+        //Time Expiration
+        //<string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
+        Text(
+            text = stringResource(
+                id = com.css545.meetme.R.string.tracking_start_tracking_expiration,
+                timeExpiration),
+            fontSize = 16.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
         //Bill amount
         Text(
@@ -124,6 +139,15 @@ private fun billCalculator(time: Double, costPerHour: Double = 15.0): String{
     return NumberFormat.getCurrencyInstance().format(bill)
     //Formats the total bill as a dollar amount for printing
 }
+
+/*
+private fun ExpirationTime(): String{
+    val currentTime = LocalDateTime.now()
+    val formatForTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+    return currentTime.format(formatForTime)
+}
+
+ */
 
 //+++++++++++++++++++++PREVIEW +++++++++++++++++
 @Preview(showBackground = true)
