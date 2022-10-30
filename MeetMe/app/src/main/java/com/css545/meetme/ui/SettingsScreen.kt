@@ -1,9 +1,12 @@
 package com.css545.meetme.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -14,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -23,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
 import com.css545.meetme.ui.components.CustomTextField
+import com.css545.meetme.ui.components.ToggleSwitch
 
 @Preview
 @Composable
@@ -46,13 +51,20 @@ fun SettingsScreen() {
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         PasswordTextField(text = confirmPassword, onValueChange = {confirmPassword = it}, label = "Confirm Password")
 
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(color = Color.Black, thickness = 1.dp)
         CustomButton(onClick = { /*TODO*/ }, text = "Update")
 
         // Select map icon
 
         // Toggle whether you can be found or not
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider(color = Color.Black, thickness = 1.dp)
+        Spacer(modifier = Modifier.height(10.dp))
+        val checkedState = rememberSaveable { mutableStateOf(false) }
+        ToggleSwitch(
+            label = "Allow Location sharing: ",
+            checkedState = checkedState.value,
+            onCheckedChange = { checkedState.value = it }
+        )
 
         // P2 - Unit of distance
 
