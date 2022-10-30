@@ -25,10 +25,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 //import java.time.format.DateTimeFormatter
 
 @Composable
-fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
-                        onConsentButtonClicked: () -> Unit
-                        )
-{
+fun StartTrackingScreen(
+    onStartTrackingButtonClicked: () -> Unit,
+    onConsentButtonClicked: () -> Unit
+) {
     var amountInput by rememberSaveable { mutableStateOf("") }
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
