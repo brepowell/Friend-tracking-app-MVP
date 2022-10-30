@@ -43,7 +43,7 @@ fun ConsentButton (
         onClick = onClick,
         modifier = modifier.widthIn(min = 250.dp)
     ) {
-       Text("Consent")
+        Text("Consent")
     }
 }
 
