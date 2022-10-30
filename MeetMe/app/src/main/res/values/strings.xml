@@ -2,10 +2,21 @@
     <string name="app_name">MeetMe</string>
     <string name="back_button">Back</string>
 
-<!-- Screens -->
+    <!-- Screens -->
     <string name="map">Map</string>
     <string name="start_tracking">Start Tracking</string>
     <string name="settings">Settings</string>
     <string name="help">Help</string>
     <string name="consent">Consent</string>
+
+    <!--Start tracking text: -->
+    <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
+    <string name="tracking_start_button">Start Tracking</string>
+    <string name="tracking_start_friends">Friend(s) to invite: </string>
+    <string name="tracking_start_duration">Tracking duration: </string>
+    <string name="tracking_start_units_hours">Hours</string>
+    <string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
+    <string name="tracking_start_bill_amount">Bill amount: %s </string>
+    <string name="tracking_start_send_invite">Send Invitation</string>
+    
 </resources>
