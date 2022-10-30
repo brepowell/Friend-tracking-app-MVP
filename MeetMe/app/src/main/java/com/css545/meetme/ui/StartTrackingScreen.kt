@@ -14,9 +14,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.css545.meetme.R
 import java.text.NumberFormat
+/*
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 //import java.time.LocalDateTime
 //import java.time.format.DateTimeFormatter
+*/
 
 @Composable
 fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
@@ -27,14 +33,19 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
     val bill = billCalculator(trackingDuration)
-    val timeExpiration = "5:00 PM PST"
+    //val timeExpiration = "5:00 PM PST"
+
+    //IMAGES
+    //val image1 = painterResource(R.drawable.person_silhouette_1)
+    //val image2 = painterResource(R.drawable.person_silhouette_2)
+    //val image3 = painterResource(R.drawable.person_silhouette_3)
 
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)){
         //Prompt at the top
         Text(
-            text = stringResource(id = com.css545.meetme.R.string.tracking_start_prompt),
+            text = stringResource(id = R.string.tracking_start_prompt),
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -45,17 +56,45 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
         //Friend(s)
         //tracking_start_friends
         Text(
-            text = stringResource(id = com.css545.meetme.R.string.tracking_start_friends),
+            text = stringResource(id = R.string.tracking_start_friends),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
+
+        /*
+        //Friend(s) -- placeholder images
+        Row (modifier = Modifier.padding(8.dp)) {
+            Image(
+                painter = image1,
+                contentDescription = null,
+                modifier = Modifier
+                    .height(16.dp)
+                    .width(16.dp)
+            )
+            Image(
+                painter = image2,
+                contentDescription = null,
+                modifier = Modifier
+                    .height(16.dp)
+                    .width(16.dp)
+            )
+            Image(
+                painter = image3,
+                contentDescription = null,
+                modifier = Modifier
+                    .height(16.dp)
+                    .width(16.dp)
+            )
+        }
+
+         */
 
         Spacer(modifier = Modifier.height(8.dp))
 
         //Tracking Duration - header above text field
         Text(
             text = stringResource(
-                id = com.css545.meetme.R.string.tracking_start_duration),
+                id = R.string.tracking_start_duration),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
@@ -66,6 +105,7 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
 
         //Time Expiration
         //<string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
+        /*
         Text(
             text = stringResource(
                 id = com.css545.meetme.R.string.tracking_start_tracking_expiration,
@@ -73,10 +113,11 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
+         */
 
         //Bill amount
         Text(
-            text = stringResource(id = com.css545.meetme.R.string.tracking_start_bill_amount, bill),
+            text = stringResource(id = R.string.tracking_start_bill_amount, bill),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
@@ -98,7 +139,9 @@ fun StartTrackingButton(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Start Tracking")
+        Text(
+            text = stringResource(id = R.string.tracking_start_button),
+        )
     }
 }
 
@@ -122,7 +165,7 @@ fun TimeLimitEntryField(value: String, onValueChange: (String) -> Unit){
         onValueChange = onValueChange,
         label = {
             Text(
-                text = stringResource(id = com.css545.meetme.R.string.tracking_start_units_hours),
+                text = stringResource(id = R.string.tracking_start_units_hours),
                 modifier = Modifier.fillMaxWidth()
             )
         },
