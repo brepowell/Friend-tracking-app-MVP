@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,9 +20,10 @@ import com.css545.meetme.ui.*
 
 enum class MeetMeScreen() {
     Map,
-    Track,
+    StartTracking,
     Settings,
-    Help
+    Help,
+    Consent
 }
 
 @Composable
@@ -83,15 +83,21 @@ fun MeetMeApp(modifier: Modifier = Modifier) {
                     },
                     // This is where the Track button should take us
                     onTrackButtonClicked = {
-                        navController.navigate(MeetMeScreen.Track.name)
+                        navController.navigate(MeetMeScreen.StartTracking.name)
                     }
                 )
             }
 
-            composable(route = MeetMeScreen.Track.name) {
-                StartTrackingScreen(onStartTrackingButtonClicked = {
-                    navController.navigate(MeetMeScreen.Map.name)
-                })
+            composable(route = MeetMeScreen.StartTracking.name) {
+                StartTrackingScreen(
+                    onStartTrackingButtonClicked = {
+                        navController.navigate(MeetMeScreen.Map.name)
+                    },
+
+                    onConsentButtonClicked = {
+                        navController.navigate(MeetMeScreen.Consent.name)
+                    }
+                )
             }
 
             composable(route = MeetMeScreen.Settings.name) {
@@ -100,6 +106,10 @@ fun MeetMeApp(modifier: Modifier = Modifier) {
 
             composable(route = MeetMeScreen.Help.name) {
                 HelpScreen()
+            }
+
+            composable(route = MeetMeScreen.Consent.name) {
+                ConsentScreen()
             }
         }
     }
