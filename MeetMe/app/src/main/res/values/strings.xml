@@ -18,5 +18,5 @@
     <string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
     <string name="tracking_start_bill_amount">Bill amount: %s </string>
     <string name="tracking_start_send_invite">Send Invitation</string>
-    
+
 </resources>
