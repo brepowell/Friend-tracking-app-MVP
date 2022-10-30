@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.material.Button
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -44,4 +45,11 @@ fun ConsentButton (
     ) {
        Text("Consent")
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewStartTracking() {
+    StartTrackingScreen(onConsentButtonClicked = {},
+        onStartTrackingButtonClicked = {})
 }
