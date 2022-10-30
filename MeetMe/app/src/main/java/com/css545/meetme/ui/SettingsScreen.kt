@@ -41,22 +41,41 @@ fun SettingsScreen(
 
     Column (horizontalAlignment = Alignment.CenterHorizontally) {
         // UserName
-        CustomTextField(text = settingsState.username, onValueChange = onUsernameChanged, label = "Username")
+        CustomTextField(
+            text = settingsState.username,
+            onValueChange = onUsernameChanged,
+            label = "Username"
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
         Divider(color = Color.Black, thickness = 1.dp)
         // Password
         Text("Change Password", style = MaterialTheme.typography.caption)
         var password by rememberSaveable { mutableStateOf("") }
-        PasswordTextField(text = password, onValueChange = {password = it}, label = "Current Password")
+        PasswordTextField(
+            text = password,
+            onValueChange = {password = it},
+            label = "Current Password"
+        )
 
         var newPassword by rememberSaveable { mutableStateOf("") }
-        PasswordTextField(text = newPassword, onValueChange = {newPassword = it}, label = "New Password")
+        PasswordTextField(
+            text = newPassword,
+            onValueChange = {newPassword = it},
+            label = "New Password"
+        )
 
         var confirmPassword by rememberSaveable { mutableStateOf("") }
-        PasswordTextField(text = confirmPassword, onValueChange = {confirmPassword = it}, label = "Confirm Password")
+        PasswordTextField(
+            text = confirmPassword,
+            onValueChange = {confirmPassword = it},
+            label = "Confirm Password"
+        )
 
-        CustomButton(onClick = onUpdatePasswordClicked, text = "Update")
+        CustomButton(
+            onClick = onUpdatePasswordClicked,
+            text = "Update"
+        )
 
         // Select map icon
 

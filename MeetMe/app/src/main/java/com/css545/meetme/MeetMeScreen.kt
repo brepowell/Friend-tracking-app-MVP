@@ -105,6 +105,7 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.StartTracking.name) {
                 StartTrackingScreen(
                     onStartTrackingButtonClicked = {
+                        viewModel.isTracking(true)
                         navController.navigate(MeetMeScreen.Map.name)
                     },
 
