@@ -24,19 +24,24 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
 import com.css545.meetme.ui.components.CustomTextField
 import com.css545.meetme.ui.components.ToggleSwitch
 
-@Preview
+//@Preview
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    settingsState: SettingsState,
+    onUsernameChanged: (String) -> Unit,
+    onLocationSharingChanged: (Boolean) -> Unit,
+    onUpdatePasswordClicked: () -> Unit
+) {
 
     Column (horizontalAlignment = Alignment.CenterHorizontally) {
         // UserName
-        var username by rememberSaveable { mutableStateOf("jardiamj") }
-        CustomTextField(text = username, onValueChange = {username = it}, label = "Username")
+        CustomTextField(text = settingsState.username, onValueChange = onUsernameChanged, label = "Username")
 
         Spacer(modifier = Modifier.height(10.dp))
         Divider(color = Color.Black, thickness = 1.dp)
@@ -51,7 +56,7 @@ fun SettingsScreen() {
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         PasswordTextField(text = confirmPassword, onValueChange = {confirmPassword = it}, label = "Confirm Password")
 
-        CustomButton(onClick = { /*TODO*/ }, text = "Update")
+        CustomButton(onClick = onUpdatePasswordClicked, text = "Update")
 
         // Select map icon
 
@@ -59,11 +64,10 @@ fun SettingsScreen() {
         Spacer(modifier = Modifier.height(10.dp))
         Divider(color = Color.Black, thickness = 1.dp)
         Spacer(modifier = Modifier.height(10.dp))
-        val checkedState = rememberSaveable { mutableStateOf(false) }
         ToggleSwitch(
             label = "Allow Location sharing: ",
-            checkedState = checkedState.value,
-            onCheckedChange = { checkedState.value = it }
+            checkedState = settingsState.isSharingLocation,
+            onCheckedChange = onLocationSharingChanged
         )
 
         // P2 - Unit of distance

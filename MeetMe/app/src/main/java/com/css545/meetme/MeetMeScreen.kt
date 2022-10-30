@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.css545.meetme.ui.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 enum class MeetMeScreen(@StringRes val title: Int) {
@@ -54,12 +56,12 @@ fun MeetMeAppbar (
 
 
 @Composable
-fun MeetMeApp(modifier: Modifier = Modifier) {
-    // TODO: Create NavController
+fun MeetMeApp(
+    modifier: Modifier = Modifier,
+    viewModel: MeetMeViewModel = viewModel()
+) {
     val navController = rememberNavController()
-
     val backStackEntry by navController.currentBackStackEntryAsState()
-
     val currentScreen = MeetMeScreen.valueOf(
         backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
     )
@@ -74,15 +76,16 @@ fun MeetMeApp(modifier: Modifier = Modifier) {
             )
         }
     ) {
-        // TODO: add ability to get properties from a viewModel and DataStore
+
+        val settingsState = viewModel.settingsState.collectAsState()
 
         // This is the main screen holder. We will add the routes in a
         // NavHost composable function
-
-        // TODO: add NavHost
         NavHost(
             navController = navController,
-            startDestination = MeetMeScreen.Map.name,
+            startDestination =
+                if (settingsState.value.isTracking) MeetMeScreen.Map.name
+                else MeetMeScreen.StartTracking.name,
             modifier = modifier.padding(10.dp)
         ) {
             // We will create composable routes for the various screens
@@ -112,7 +115,12 @@ fun MeetMeApp(modifier: Modifier = Modifier) {
             }
 
             composable(route = MeetMeScreen.Settings.name) {
-                SettingsScreen()
+                SettingsScreen(
+                    settingsState = settingsState.value,
+                    onUsernameChanged = {viewModel.setUserName(it)},
+                    onLocationSharingChanged = {viewModel.isSharingLocation(it)},
+                    onUpdatePasswordClicked = { /* TODO: Implement */}
+                )
             }
 
             composable(route = MeetMeScreen.Help.name) {
