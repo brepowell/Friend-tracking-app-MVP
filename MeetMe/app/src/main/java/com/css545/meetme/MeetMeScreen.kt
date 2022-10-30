@@ -1,5 +1,6 @@
 package com.css545.meetme
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -11,36 +12,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.css545.meetme.ui.*
 
 
-enum class MeetMeScreen() {
-    Map,
-    StartTracking,
-    Settings,
-    Help,
-    Consent
+enum class MeetMeScreen(@StringRes val title: Int) {
+    Map(title = R.string.map),
+    StartTracking(title = R.string.start_tracking),
+    Settings(title = R.string.settings),
+    Help(title = R.string.help),
+    Consent(title = R.string.consent)
 }
 
 @Composable
 fun MeetMeAppbar (
+    currentScreen: MeetMeScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar (
-        title = { Text(stringResource(id = R.string.app_name))},
+        title = { Text(stringResource(currentScreen.title))},
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon (
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back_button)
+                        contentDescription = stringResource(R.string.back_button)
                     )
                 }
             }
@@ -53,14 +57,21 @@ fun MeetMeAppbar (
 fun MeetMeApp(modifier: Modifier = Modifier) {
     // TODO: Create NavController
     val navController = rememberNavController()
-    
-    //TODO: Get current back stack entry
-    
-    //TODO: Get the name of the current screen
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentScreen = MeetMeScreen.valueOf(
+        backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
+    )
     
     Scaffold (
         topBar = {
-            MeetMeAppbar(canNavigateBack = false, navigateUp = { /*TODO: implement*/ })
+            MeetMeAppbar(
+                currentScreen = currentScreen,
+                // Show back arrow only if there is something on the backstack
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() }
+            )
         }
     ) {
         // TODO: add ability to get properties from a viewModel and DataStore
