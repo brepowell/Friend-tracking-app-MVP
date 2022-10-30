@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -26,9 +27,8 @@ import com.css545.meetme.ui.components.CustomTextField
 @Preview
 @Composable
 fun SettingsScreen() {
-//    Text("Settings screen", style = MaterialTheme.typography.h4)
 
-    Column {
+    Column (horizontalAlignment = Alignment.CenterHorizontally) {
         // UserName
         var username by rememberSaveable { mutableStateOf("jardiamj") }
         CustomTextField(text = username, onValueChange = {username = it}, label = "Username")
@@ -46,7 +46,9 @@ fun SettingsScreen() {
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         PasswordTextField(text = confirmPassword, onValueChange = {confirmPassword = it}, label = "Confirm Password")
 
-        CustomButton(onClick = { /*TODO*/ }, text = "Update Password")
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider(color = Color.Black, thickness = 1.dp)
+        CustomButton(onClick = { /*TODO*/ }, text = "Update")
 
         // Select map icon
 
