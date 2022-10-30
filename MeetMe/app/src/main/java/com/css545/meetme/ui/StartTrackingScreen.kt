@@ -8,6 +8,7 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -16,29 +17,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.css545.meetme.R
 import java.text.NumberFormat
-/*
 import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.runtime.saveable.rememberSaveable
+//import androidx.compose.ui.res.painterResource
+//import androidx.compose.ui.layout.ContentScale
 //import java.time.LocalDateTime
 //import java.time.format.DateTimeFormatter
-*/
 
 @Composable
 fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
                         onConsentButtonClicked: () -> Unit
                         )
 {
-    var amountInput by remember { mutableStateOf("") }
+    var amountInput by rememberSaveable { mutableStateOf("") }
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
     val bill = billCalculator(trackingDuration)
     //val timeExpiration = "5:00 PM PST"
 
     //IMAGES
-    //val image1 = painterResource(R.drawable.person_silhouette_1)
-    //val image2 = painterResource(R.drawable.person_silhouette_2)
-    //val image3 = painterResource(R.drawable.person_silhouette_3)
+    val image1 = painterResource(R.drawable.person_silhouette_1)
+    val image2 = painterResource(R.drawable.person_silhouette_2)
+    val image3 = painterResource(R.drawable.person_silhouette_3)
 
     Column(
         modifier = Modifier.padding(32.dp),
@@ -61,33 +61,31 @@ fun StartTrackingScreen(onStartTrackingButtonClicked: () -> Unit,
             modifier = Modifier.align(Alignment.Start)
         )
 
-        /*
+
         //Friend(s) -- placeholder images
         Row (modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = image1,
                 contentDescription = null,
                 modifier = Modifier
-                    .height(16.dp)
-                    .width(16.dp)
+                    .height(42.dp)
+                    .width(42.dp)
             )
             Image(
                 painter = image2,
                 contentDescription = null,
                 modifier = Modifier
-                    .height(16.dp)
-                    .width(16.dp)
+                    .height(42.dp)
+                    .width(42.dp)
             )
             Image(
                 painter = image3,
                 contentDescription = null,
                 modifier = Modifier
-                    .height(16.dp)
-                    .width(16.dp)
+                    .height(42.dp)
+                    .width(42.dp)
             )
         }
-
-         */
 
         Spacer(modifier = Modifier.height(8.dp))
 
