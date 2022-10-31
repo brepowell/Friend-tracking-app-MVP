@@ -132,12 +132,11 @@ fun MeetMeApp(
             // We will create composable routes for the various screens
             composable(route = MeetMeScreen.Map.name) {
                 MapScreen(
-                    // This is where the Settings button should take us
-                    onSettingsButtonClicked = {
-                        navController.navigate(MeetMeScreen.Settings.name)
-                    },
                     // This is where the Track button should take us
                     onTrackButtonClicked = {
+                        scope.launch {
+                            settingsDataStore.saveTrackingToPreferencesStore(false)
+                        }
                         navController.navigate(MeetMeScreen.StartTracking.name)
                     }
                 )
@@ -146,15 +145,15 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.StartTracking.name) {
                 StartTrackingScreen(
                     settingsState = settingsState.value,
+//                    onStartTrackingButtonClicked = {
+
+//                        navController.navigate(MeetMeScreen.Map.name)
+//                    },
                     onStartTrackingButtonClicked = {
                         scope.launch {
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
-                            settingsDataStore.saveTrackingToPreferencesStore(true)
+//                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
-                        navController.navigate(MeetMeScreen.Map.name)
-                    },
-
-                    onConsentButtonClicked = {
                         navController.navigate(MeetMeScreen.Consent.name)
                     }
                 )
@@ -185,7 +184,16 @@ fun MeetMeApp(
             }
 
             composable(route = MeetMeScreen.Consent.name) {
-                ConsentScreen()
+                ConsentScreen(
+                    settingsState = settingsState.value,
+                    onYesClicked = {
+                        scope.launch {
+                            settingsDataStore.saveTrackingToPreferencesStore(true)
+                        }
+                        navController.navigate(MeetMeScreen.Map.name)
+                   },
+                    onNoClicked = { navController.navigate(MeetMeScreen.StartTracking.name) }
+                )
             }
         }
     }
