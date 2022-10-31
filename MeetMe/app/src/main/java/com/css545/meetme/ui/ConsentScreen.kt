@@ -30,7 +30,8 @@ fun ConsentScreen() {
         //Friend(s)
         //tracking_start_friends
         Text(
-            text = stringResource(id = R.string.tracking_handshake_consent, "7"),
+            text = stringResource(
+                id = R.string.tracking_handshake_consent, "7"),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
