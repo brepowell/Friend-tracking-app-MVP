@@ -36,7 +36,8 @@ fun SettingsScreen(
     settingsState: SettingsState,
     onUsernameChanged: (String) -> Unit,
     onLocationSharingChanged: (Boolean) -> Unit,
-    onUpdatePasswordClicked: () -> Unit
+    onUpdatePasswordClicked: () -> Unit,
+    onHelpButtonClicked: () -> Unit
 ) {
 
     Column (horizontalAlignment = Alignment.CenterHorizontally) {
@@ -90,6 +91,10 @@ fun SettingsScreen(
         )
 
         // P2 - Unit of distance
+
+
+        // Help!
+        CustomButton(onClick = onHelpButtonClicked, text = "Help!")
 
     }
 }

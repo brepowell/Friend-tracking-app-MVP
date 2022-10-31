@@ -121,7 +121,8 @@ fun MeetMeApp(
                     settingsState = settingsState.value,
                     onUsernameChanged = {viewModel.setUserName(it)},
                     onLocationSharingChanged = {viewModel.isSharingLocation(it)},
-                    onUpdatePasswordClicked = { /* TODO: Implement */}
+                    onUpdatePasswordClicked = { /* TODO: Implement */},
+                    onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
                 )
             }
 
