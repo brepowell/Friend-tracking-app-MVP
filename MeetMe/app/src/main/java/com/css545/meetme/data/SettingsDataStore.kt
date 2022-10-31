@@ -29,6 +29,7 @@ class SettingsDataStore (private val context: Context){
         val IS_TRACKING = booleanPreferencesKey("is_tracking")
         val USERNAME = stringPreferencesKey("username")
         val IS_SHARING_LOCATION = booleanPreferencesKey("is_sharing_location")
+        val TRACK_LENGTH = intPreferencesKey("track_length")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,7 +47,8 @@ class SettingsDataStore (private val context: Context){
             val name = preferences[PreferenceKeys.USERNAME] ?: defaultNickName
             val isTracking = preferences[PreferenceKeys.IS_TRACKING] ?: false
             val isSharingLocation = preferences[PreferenceKeys.IS_SHARING_LOCATION] ?: false
-            SettingsState(isTracking, isSharingLocation, name)
+            val trackLength = preferences[PreferenceKeys.TRACK_LENGTH] ?: 0
+            SettingsState(isTracking, isSharingLocation, name, trackLength)
         }
 
     suspend fun saveSharingLocationToPreferencesStore(isSharingLocation: Boolean) {
@@ -66,10 +68,17 @@ class SettingsDataStore (private val context: Context){
             preferences[PreferenceKeys.USERNAME] = nickName
         }
     }
+
+    suspend fun saveTrackLengthToPreferencesStore(trackLength: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferenceKeys.TRACK_LENGTH] = trackLength.toInt()
+        }
+    }
 }
 
 data class SettingsState (
     val isTracking: Boolean = false,
     val isSharingLocation: Boolean = false,
-    val username: String = "jardiamj"
+    val username: String = "jardiamj",
+    val trackLength: Int = 0
 )

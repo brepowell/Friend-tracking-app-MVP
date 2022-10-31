@@ -19,6 +19,8 @@ import com.css545.meetme.R
 import java.text.NumberFormat
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.saveable.rememberSaveable
+import com.css545.meetme.data.SettingsState
+
 //import androidx.compose.ui.res.painterResource
 //import androidx.compose.ui.layout.ContentScale
 //import java.time.LocalDateTime
@@ -26,10 +28,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 
 @Composable
 fun StartTrackingScreen(
-    onStartTrackingButtonClicked: () -> Unit,
+    settingsState: SettingsState,
+    onStartTrackingButtonClicked: (String) -> Unit,
     onConsentButtonClicked: () -> Unit
 ) {
-    var amountInput by rememberSaveable { mutableStateOf("") }
+    var amountInput by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
     val bill = billCalculator(trackingDuration)
@@ -98,7 +101,10 @@ fun StartTrackingScreen(
         )
 
         //TextField to enter the hours
-        TimeLimitEntryField(amountInput, onValueChange = {amountInput = it})
+        TimeLimitEntryField(
+            value = amountInput,
+            onValueChange = {amountInput = it}
+        )
         Spacer(modifier = Modifier.height(24.dp))
 
         //Time Expiration
@@ -123,7 +129,7 @@ fun StartTrackingScreen(
         Spacer(modifier = Modifier.height(48.dp))
 
         //Buttons
-        InviteToStartTrackingButton(onClick = onStartTrackingButtonClicked)
+        InviteToStartTrackingButton(onClick = {onStartTrackingButtonClicked(amountInput)})
         ConsentButton(onClick = onConsentButtonClicked)
     }
 }
@@ -134,7 +140,7 @@ fun InviteToStartTrackingButton(
     //modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = onClick,
+        onClick = {onClick()},
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
@@ -193,6 +199,8 @@ private fun ExpirationTime(): String{
 @Preview(showBackground = true)
 @Composable
 fun PreviewStartTracking() {
-    StartTrackingScreen(onConsentButtonClicked = {},
+    StartTrackingScreen(
+        settingsState = SettingsState(),
+        onConsentButtonClicked = {},
         onStartTrackingButtonClicked = {})
 }

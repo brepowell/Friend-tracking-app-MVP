@@ -120,8 +120,10 @@ fun MeetMeApp(
 
             composable(route = MeetMeScreen.StartTracking.name) {
                 StartTrackingScreen(
+                    settingsState = settingsState.value,
                     onStartTrackingButtonClicked = {
                         scope.launch {
+                            settingsDataStore.saveTrackLengthToPreferencesStore(it)
                             settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
                         navController.navigate(MeetMeScreen.Map.name)
