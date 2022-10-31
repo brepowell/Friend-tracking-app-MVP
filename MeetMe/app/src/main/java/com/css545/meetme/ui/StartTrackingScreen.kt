@@ -30,7 +30,6 @@ import com.css545.meetme.data.SettingsState
 fun StartTrackingScreen(
     settingsState: SettingsState,
     onStartTrackingButtonClicked: (String) -> Unit,
-    onConsentButtonClicked: () -> Unit
 ) {
     var amountInput by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
     //toDoubleOrNull converts an int to a double
@@ -103,7 +102,10 @@ fun StartTrackingScreen(
         //TextField to enter the hours
         TimeLimitEntryField(
             value = amountInput,
-            onValueChange = {amountInput = it}
+            onValueChange = {
+                amountInput = it
+
+            }
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -129,8 +131,7 @@ fun StartTrackingScreen(
         Spacer(modifier = Modifier.height(48.dp))
 
         //Buttons
-        InviteToStartTrackingButton(onClick = {onStartTrackingButtonClicked(amountInput)})
-        ConsentButton(onClick = onConsentButtonClicked)
+        InviteToStartTrackingButton(onClick = { onStartTrackingButtonClicked(amountInput) })
     }
 }
 
@@ -201,6 +202,5 @@ private fun ExpirationTime(): String{
 fun PreviewStartTracking() {
     StartTrackingScreen(
         settingsState = SettingsState(),
-        onConsentButtonClicked = {},
         onStartTrackingButtonClicked = {})
 }

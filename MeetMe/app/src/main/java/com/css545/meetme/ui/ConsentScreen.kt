@@ -11,9 +11,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.css545.meetme.R
+import com.css545.meetme.data.SettingsState
+import com.css545.meetme.ui.components.CustomButton
 
 @Composable
-fun ConsentScreen() {
+fun ConsentScreen(
+    settingsState: SettingsState,
+    onYesClicked: () -> Unit,
+    onNoClicked: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -31,12 +37,17 @@ fun ConsentScreen() {
         //tracking_start_friends
         Text(
             text = stringResource(
-                id = R.string.tracking_handshake_consent, "7"),
+                id = R.string.tracking_handshake_consent,
+                settingsState.trackLength.toString()
+            ),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
-        YesButton {}
-        NoButton {}
+
+        CustomButton(onClick = onYesClicked, text = "Yes")
+        CustomButton(onClick = onNoClicked, text = "No")
+//        YesButton {}
+//        NoButton {}
     }
 }
 
@@ -73,5 +84,5 @@ fun NoButton(
 @Preview(showBackground = true)
 @Composable
 fun PreviewConsentScreen() {
-    ConsentScreen()
+    ConsentScreen( SettingsState(),{}, {})
 }

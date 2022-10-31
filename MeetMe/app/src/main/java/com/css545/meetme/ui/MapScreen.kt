@@ -16,8 +16,7 @@ import com.css545.meetme.ui.components.CustomButton
 
 
 @Composable
-fun MapScreen(onSettingsButtonClicked: () -> Unit,
-              onTrackButtonClicked: () -> Unit) {
+fun MapScreen(onTrackButtonClicked: () -> Unit) {
 
     Box{
         val image1 = painterResource(R.drawable.google_maps_marker)
@@ -47,6 +46,6 @@ fun MapScreen(onSettingsButtonClicked: () -> Unit,
 @Composable
 fun ShowMapPreview()
 {
-    MapScreen(onSettingsButtonClicked = {  }, onTrackButtonClicked = {})
+    MapScreen(onTrackButtonClicked = {})
 
 }
