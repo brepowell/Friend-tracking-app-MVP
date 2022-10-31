@@ -8,6 +8,7 @@
     <string name="settings">Settings</string>
     <string name="help">Help</string>
     <string name="consent">Consent</string>
+    <string name="stop_tracking_screen">Stop Tracking</string>
 
     <!--Start tracking text: -->
     <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
@@ -29,5 +30,7 @@
     <string name="help_header">Help with MeetMe</string>
     <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked. If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
 
+    <!--Stop tracking text: -->
+    <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>
 
 </resources>
