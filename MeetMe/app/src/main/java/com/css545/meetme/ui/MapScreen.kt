@@ -1,21 +1,55 @@
 package com.css545.meetme.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.Button
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
+
 
 @Composable
 fun MapScreen(onSettingsButtonClicked: () -> Unit,
               onTrackButtonClicked: () -> Unit) {
-    Column {
-        Text("Map Screen")
-        CustomButton(onClick = { onSettingsButtonClicked() }, text = "Go To Settings")
-        CustomButton(onClick = { onTrackButtonClicked() }, text = "Track")
+
+    Box{
+        val image1 = painterResource(R.drawable.google_maps_marker)
+        Image(
+            painter = image1,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            //val image1 = painterResource(R.drawable.google_maps_marker)
+            Text("Map Screen")
+            CustomButton(onClick = { onSettingsButtonClicked() }, text = "Go To Settings")
+            CustomButton(
+                onClick = { onTrackButtonClicked() },
+                text = "Track"
+            )
+
+        }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ShowMapPreview()
+{
+    MapScreen(onSettingsButtonClicked = {  }, onTrackButtonClicked = {})
+
 }
