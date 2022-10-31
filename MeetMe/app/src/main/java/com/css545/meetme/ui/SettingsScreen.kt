@@ -1,5 +1,6 @@
 package com.css545.meetme.ui
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.css545.meetme.R
+import com.css545.meetme.data.SettingsState
 import com.css545.meetme.ui.components.CustomButton
 import com.css545.meetme.ui.components.CustomTextField
 import com.css545.meetme.ui.components.ToggleSwitch
@@ -44,7 +46,7 @@ fun SettingsScreen(
         // UserName
         CustomTextField(
             text = settingsState.username,
-            onValueChange = onUsernameChanged,
+            onValueChange = {onUsernameChanged(it)},
             label = "Username"
         )
 
