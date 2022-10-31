@@ -1,5 +1,7 @@
 package com.css545.meetme
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -14,14 +16,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.css545.meetme.ui.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import com.css545.meetme.data.SettingsDataStore
+import androidx.lifecycle.*
+import com.css545.meetme.data.SettingsState
+import kotlinx.coroutines.launch
 
 
 enum class MeetMeScreen(@StringRes val title: Int) {
@@ -56,10 +66,11 @@ fun MeetMeAppbar (
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MeetMeApp(
-    modifier: Modifier = Modifier,
-    viewModel: MeetMeViewModel = viewModel()
+    modifier: Modifier = Modifier
+//    viewModel: MeetMeViewModel = viewModel()
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -78,7 +89,11 @@ fun MeetMeApp(
         }
     ) {
 
-        val settingsState = viewModel.settingsState.collectAsState()
+//        val settingsState = viewModel.settingsState.collectAsState()
+
+        val settingsDataStore = SettingsDataStore(LocalContext.current)
+        val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
+        val scope = rememberCoroutineScope()
 
         // This is the main screen holder. We will add the routes in a
         // NavHost composable function
@@ -106,7 +121,9 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.StartTracking.name) {
                 StartTrackingScreen(
                     onStartTrackingButtonClicked = {
-                        viewModel.isTracking(true)
+                        scope.launch {
+                            settingsDataStore.saveTrackingToPreferencesStore(true)
+                        }
                         navController.navigate(MeetMeScreen.Map.name)
                     },
 
@@ -119,8 +136,16 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.Settings.name) {
                 SettingsScreen(
                     settingsState = settingsState.value,
-                    onUsernameChanged = {viewModel.setUserName(it)},
-                    onLocationSharingChanged = {viewModel.isSharingLocation(it)},
+                    onUsernameChanged = {
+                        scope.launch {
+                            settingsDataStore.saveNameToPreferencesStore(it)
+                        }
+                    },//{viewModel.setUserName(it)},
+                    onLocationSharingChanged = {
+                        scope.launch {
+                            settingsDataStore.saveSharingLocationToPreferencesStore(it)
+                        }
+                    },
                     onUpdatePasswordClicked = { /* TODO: Implement */},
                     onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
                 )
