@@ -23,6 +23,7 @@ import com.css545.meetme.ui.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
+
 enum class MeetMeScreen(@StringRes val title: Int) {
     Map(title = R.string.map),
     StartTracking(title = R.string.start_tracking),
@@ -125,7 +126,9 @@ fun MeetMeApp(
             }
 
             composable(route = MeetMeScreen.Help.name) {
-                HelpScreen()
+                HelpScreen( onSettingsButtonClicked = {
+                    navController.navigate(MeetMeScreen.Settings.name)
+                })
             }
 
             composable(route = MeetMeScreen.Consent.name) {

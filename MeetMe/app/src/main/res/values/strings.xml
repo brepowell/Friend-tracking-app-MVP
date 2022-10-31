@@ -26,4 +26,8 @@
     <string name="agree">Yes</string>
     <string name="disagree">No</string>
 
+    <string name="help_header">Help with MeetMe</string>
+    <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked. If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
+
+
 </resources>
