@@ -38,7 +38,7 @@ fun MapScreen(onSettingsButtonClicked: () -> Unit,
             CustomButton(onClick = { onSettingsButtonClicked() }, text = "Go To Settings")
             CustomButton(
                 onClick = { onTrackButtonClicked() },
-                text = "Track"
+                text = "Stop Tracking"
             )
 
         }
