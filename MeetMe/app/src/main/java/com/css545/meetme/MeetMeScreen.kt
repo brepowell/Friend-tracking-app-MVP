@@ -3,7 +3,7 @@ package com.css545.meetme
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -14,9 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -47,22 +53,40 @@ fun MeetMeAppbar (
     currentScreen: MeetMeScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
+    onSettingsClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar (
         title = { Text(stringResource(currentScreen.title))},
         modifier = modifier,
         navigationIcon = {
-            if (canNavigateBack) {
-                IconButton(onClick = navigateUp) {
-                    Icon (
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
-                    )
+            Row (
+                horizontalArrangement = Arrangement.End
+            ){
+                if (canNavigateBack) {
+                    IconButton(onClick = navigateUp) {
+                        Icon (
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_button)
+                        )
+                    }
                 }
+
+
             }
         }
     )
+    Row (
+        horizontalArrangement = Arrangement.End
+    ){
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(
+            onClick = { onSettingsClicked() }
+        ) {
+            Icon(imageVector = Icons.Filled.Settings, contentDescription = null, tint = Color.White)
+        }
+    }
+
 }
 
 
@@ -84,7 +108,8 @@ fun MeetMeApp(
                 currentScreen = currentScreen,
                 // Show back arrow only if there is something on the backstack
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                onSettingsClicked = { navController.navigate(MeetMeScreen.Settings.name) }
             )
         }
     ) {

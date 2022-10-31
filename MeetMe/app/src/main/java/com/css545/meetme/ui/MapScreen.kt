@@ -33,9 +33,6 @@ fun MapScreen(onSettingsButtonClicked: () -> Unit,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            //val image1 = painterResource(R.drawable.google_maps_marker)
-            Text("Map Screen")
-            CustomButton(onClick = { onSettingsButtonClicked() }, text = "Go To Settings")
             CustomButton(
                 onClick = { onTrackButtonClicked() },
                 text = "Stop Tracking"
