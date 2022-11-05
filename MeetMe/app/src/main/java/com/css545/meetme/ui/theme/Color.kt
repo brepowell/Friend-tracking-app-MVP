@@ -8,9 +8,9 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 /*
-private val colorVividTangerine = Color(0xffffa69e)
-private val colorTiffanyBlue = Color(0xff17bebb)
-private val colorRichBlackFogra39 = Color(0xff090809)
-private val colorJonquil = Color(0xfff9c80e)
-private val colorMeetMePurple = Color(0xff744fc6)
- */
+val colorVividTangerine = Color(0xffffa69e)
+val colorTiffanyBlue = Color(0xff17bebb)
+val colorRichBlackFogra39 = Color(0xff090809)
+val colorJonquil = Color(0xfff9c80e)
+val colorMeetMePurple = Color(0xff744fc6)
+*/
