@@ -19,8 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.Help
-import androidx.compose.ui.input.key.Key.Companion.Settings
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -42,13 +40,13 @@ import kotlinx.coroutines.launch
 "Enum classes in Kotlin have a name property that returns a string with the property name."
  */
 enum class MeetMeScreen(@StringRes val title: Int) {
-    TrackingStart(title = R.string.tracking_start),
-    Waiting(title = R.string.waiting_for_consent),
-    Consent(title = R.string.consent),
-    Map(title = R.string.map),
-    TrackingEnd(title = R.string.tracking_stop),
-    Settings(title = R.string.settings),
-    Help(title = R.string.help),
+    TrackingStart(title = R.string.screen_title_tracking_start),
+    Waiting(title = R.string.screen_title_waiting_for_consent),
+    Consent(title = R.string.screen_title_consent),
+    Map(title = R.string.screen_title_map),
+    TrackingEnd(title = R.string.screen_title_tracking_stop),
+    Settings(title = R.string.screen_title_settings),
+    Help(title = R.string.screen_title_help),
 }
 
 /** NAVIGATION BAR ALONG THE TOP
@@ -74,7 +72,7 @@ fun MeetMeAppbar (
                     IconButton(onClick = navigateUp) {
                         Icon (
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_button)
+                            contentDescription = stringResource(R.string.button_back)
                         )
                     }
                 }
