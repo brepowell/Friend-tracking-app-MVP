@@ -67,7 +67,11 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
 
-    // Permissions
-
+    /** ---------------------- Permissions --------------------------------------- */
+    //Allow the system to handle permissions requests:
+    val fragment_version = "1.5.4"
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+    val activity_version = "1.6.1"
+    implementation("androidx.activity:activity-ktx:$activity_version")
 
 }

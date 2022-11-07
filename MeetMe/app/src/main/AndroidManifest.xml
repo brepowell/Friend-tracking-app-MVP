@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!--PERMISSIONS FOR ACCESSING LOCATION DATA -->
+    <!--Access the rough location in case permission is denied for precise location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--Access the precise location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--Access location continuously -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <application
