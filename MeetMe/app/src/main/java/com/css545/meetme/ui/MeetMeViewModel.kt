@@ -1,6 +1,7 @@
 package com.css545.meetme.ui
 
 import android.content.Context
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

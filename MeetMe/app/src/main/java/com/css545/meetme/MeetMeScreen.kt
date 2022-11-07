@@ -163,6 +163,9 @@ fun MeetMeApp(
                 SettingsScreen(
                     settingsState = settingsState.value,
                     onUsernameChanged = {
+                        // TODO: This is a hack. Username should not be saved every time the
+                        //  textbox changes. Perhaps use a ViewModel or LiveData.
+                        //  Perhaps this logic should be part of the SettingsScreen
                         scope.launch {
                             settingsDataStore.saveNameToPreferencesStore(it)
                         }
