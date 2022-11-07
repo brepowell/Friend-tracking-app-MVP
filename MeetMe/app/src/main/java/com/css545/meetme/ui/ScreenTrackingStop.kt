@@ -19,7 +19,7 @@ import com.css545.meetme.R
 fun StopTrackingScreen() {
     Column{
         Text(
-            text = stringResource(id = R.string.stop_tracking_screen),
+            text = stringResource(id = R.string.tracking_stop),
             fontSize = 36.sp,
             modifier = Modifier.align(Alignment.Start)
             )
