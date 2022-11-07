@@ -14,40 +14,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.input.key.Key.Companion.Help
+import androidx.compose.ui.input.key.Key.Companion.Settings
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.css545.meetme.ui.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.css545.meetme.data.SettingsDataStore
-import androidx.lifecycle.*
 import com.css545.meetme.data.SettingsState
 import kotlinx.coroutines.launch
 
-
+/** DEFINING ROUTES (A route is "a string that corresponds to a destination"):
+    TrackingStart:  The screen where the user chooses the number of hours and sends an invitation
+    Waiting:        After the user has send an invitation, this screen shows
+    Consent:        After an invitation is received, this screen shows, asking for consent
+    Map:            The map shows during tracking. Displays pins for all users
+    Settings:       User preferences are here
+    Help:           User help is here
+"Enum classes in Kotlin have a name property that returns a string with the property name."
+ */
 enum class MeetMeScreen(@StringRes val title: Int) {
+    TrackingStart(title = R.string.tracking_start),
+    Waiting(title = R.string.waiting_for_consent),
+    Consent(title = R.string.consent),
     Map(title = R.string.map),
-    StartTracking(title = R.string.start_tracking),
+    TrackingEnd(title = R.string.tracking_stop),
     Settings(title = R.string.settings),
     Help(title = R.string.help),
-    Consent(title = R.string.consent)
 }
 
+/** NAVIGATION BAR ALONG THE TOP
+ * This has a back button, the title of the page, and a settings button
+ * */
 @Composable
 fun MeetMeAppbar (
     currentScreen: MeetMeScreen,
@@ -56,6 +62,7 @@ fun MeetMeAppbar (
     onSettingsClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    /** THE TOP APP BAR - TITLE AND BACK BUTTON */
     TopAppBar (
         title = { Text(stringResource(currentScreen.title))},
         modifier = modifier,
@@ -76,6 +83,7 @@ fun MeetMeAppbar (
             }
         }
     )
+    /** THE TOP APP BAR - THE SETTINGS GEAR ICON */
     Row (
         horizontalArrangement = Arrangement.End
     ){
@@ -89,7 +97,7 @@ fun MeetMeAppbar (
 
 }
 
-
+/** MEET ME APP -- ALL NAVIGATION HAPPENS HERE */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MeetMeApp(
@@ -101,7 +109,8 @@ fun MeetMeApp(
     val currentScreen = MeetMeScreen.valueOf(
         backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
     )
-    
+
+    /** ------------------------------- THE APP BAR --------------------------------- */
     Scaffold (
         topBar = {
             MeetMeAppbar(
@@ -120,29 +129,26 @@ fun MeetMeApp(
         val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
         val scope = rememberCoroutineScope()
 
-        // This is the main screen holder. We will add the routes in a
-        // NavHost composable function
+
+        /** ------------------------------- THE NAV HOST --------------------------------- */
+        /** This is the main screen holder.
+         * We will add all of the routes in a NavHost composable function */
         NavHost(
             navController = navController,
             startDestination =
                 if (settingsState.value.isTracking) MeetMeScreen.Map.name
-                else MeetMeScreen.StartTracking.name,
+                else MeetMeScreen.TrackingStart.name,
             modifier = modifier.padding(10.dp)
         ) {
             // We will create composable routes for the various screens
-            composable(route = MeetMeScreen.Map.name) {
-                MapScreen(
-                    // This is where the Track button should take us
-                    onTrackButtonClicked = {
-                        scope.launch {
-                            settingsDataStore.saveTrackingToPreferencesStore(false)
-                        }
-                        navController.navigate(MeetMeScreen.StartTracking.name)
-                    }
-                )
-            }
 
-            composable(route = MeetMeScreen.StartTracking.name) {
+            /** THE TRACKING START SCREEN NAVIGATION (mapped to a composable):
+             * This is where the user chooses the friend they would like to track
+             * and the duration of the tracking session
+             * After inputting those fields, the user can send an invitation to be tracked
+             * to the selected friend
+             * */
+            composable(route = MeetMeScreen.TrackingStart.name) {
                 StartTrackingScreen(
                     settingsState = settingsState.value,
 //                    onStartTrackingButtonClicked = {
@@ -154,11 +160,65 @@ fun MeetMeApp(
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
 //                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
+
+                        /** NAVIGATE TO CONSENT SCREEN */
+                        // TODO: THIS SHOULD NAVIGATE TO THE WAITING SCREEN LATER, NOT CONSENT
                         navController.navigate(MeetMeScreen.Consent.name)
                     }
                 )
             }
 
+            // TODO: ADD A WAITING SCREEN
+
+            /** THE CONSENT SCREEN NAVIGATION (mapped to a composable)
+             * Here, the user sees that someone has invited them to a tracking session
+             * They can either consent to being tracked and then go to the maps screen
+             * or they can decline and return to the start tracking screen.
+             * */
+            composable(route = MeetMeScreen.Consent.name) {
+                ConsentScreen(
+                    settingsState = settingsState.value,
+                    onYesClicked = {
+                        scope.launch {
+                            settingsDataStore.saveTrackingToPreferencesStore(true)
+                        }
+
+                        /** NAVIGATE TO MAP SCREEN */
+                        navController.navigate(MeetMeScreen.Map.name)
+                    },
+                    /** NAVIGATE BACK TO START TRACKING SCREEN */
+                    onNoClicked = { navController.navigate(MeetMeScreen.TrackingStart.name) }
+                )
+            }
+
+            /** THE MAP SCREEN NAVIGATION (mapped to a composable)
+             * Here, the user sees a map with a pin for their location and a pin for
+             * their friend's location.
+             * They can choose to stop the session at any time.
+             * */
+            composable(route = MeetMeScreen.Map.name) {
+                MapScreen(
+                    // This is where the Track button should take us
+                    onTrackButtonClicked = {
+                        scope.launch {
+                            settingsDataStore.saveTrackingToPreferencesStore(false)
+                        }
+
+                        /** NAVIGATE BACK TO START TRACKING SCREEN */
+                        navController.navigate(MeetMeScreen.TrackingStart.name)
+                    }
+                )
+            }
+
+            // TODO: ADD STOP TRACKING SCREEN NAVIGATION
+            composable(route = MeetMeScreen.TrackingEnd.name){
+                StopTrackingScreen()
+            }
+
+            /** THE SETTINGS SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can choose to edit their preferences
+             * and user information
+             * */
             composable(route = MeetMeScreen.Settings.name) {
                 SettingsScreen(
                     settingsState = settingsState.value,
@@ -176,28 +236,23 @@ fun MeetMeApp(
                         }
                     },
                     onUpdatePasswordClicked = { /* TODO: Implement */},
+
+                    /** NAVIGATE TO HELP SCREEN */
                     onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
                 )
             }
 
+            /** THE HELP SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can learn more about the app and ask for help
+             * */
             composable(route = MeetMeScreen.Help.name) {
                 HelpScreen( onSettingsButtonClicked = {
+
+                    /** NAVIGATE TO SETTINGS SCREEN */
                     navController.navigate(MeetMeScreen.Settings.name)
                 })
             }
 
-            composable(route = MeetMeScreen.Consent.name) {
-                ConsentScreen(
-                    settingsState = settingsState.value,
-                    onYesClicked = {
-                        scope.launch {
-                            settingsDataStore.saveTrackingToPreferencesStore(true)
-                        }
-                        navController.navigate(MeetMeScreen.Map.name)
-                   },
-                    onNoClicked = { navController.navigate(MeetMeScreen.StartTracking.name) }
-                )
-            }
         }
     }
 }
