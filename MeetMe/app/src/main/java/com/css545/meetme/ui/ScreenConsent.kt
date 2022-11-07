@@ -61,7 +61,7 @@ fun YesButton(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(id = R.string.agree),
+            text = stringResource(id = R.string.button_yes),
         )
     }
 }
@@ -76,7 +76,7 @@ fun NoButton(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(id = R.string.disagree),
+            text = stringResource(id = R.string.button_no),
         )
     }
 }

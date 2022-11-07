@@ -19,7 +19,7 @@ import com.css545.meetme.R
 fun StopTrackingScreen() {
     Column{
         Text(
-            text = stringResource(id = R.string.tracking_stop),
+            text = stringResource(id = R.string.screen_title_tracking_stop),
             fontSize = 36.sp,
             modifier = Modifier.align(Alignment.Start)
             )
@@ -50,7 +50,7 @@ fun YesStopButton(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(id = R.string.agree),
+            text = stringResource(id = R.string.button_yes),
         )
     }
 }
@@ -65,7 +65,7 @@ fun NoDoNotStopButton(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(id = R.string.disagree),
+            text = stringResource(id = R.string.button_no),
         )
     }
 }

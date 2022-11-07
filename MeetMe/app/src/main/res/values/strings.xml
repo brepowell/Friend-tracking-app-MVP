@@ -1,15 +1,20 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">MeetMe</string>
-    <string name="back_button">Back</string>
+
+    <!-- Generic Button Labels -->
+    <string name="button_back">Back</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
 
     <!-- Screens -->
-    <string name="map">Map</string>
-    <string name="tracking_start">Start Tracking</string>
-    <string name="waiting_for_consent">Waiting for Consent</string>
-    <string name="settings">Settings</string>
-    <string name="help">Help</string>
-    <string name="consent">Consent</string>
-    <string name="tracking_stop">Stop Tracking</string>
+    <string name="screen_title_map">Map</string>
+    <string name="screen_title_tracking_start">Start Tracking</string>
+    <string name="screen_title_waiting_for_consent">Waiting for Consent</string>
+    <string name="screen_title_settings">Settings</string>
+    <string name="screen_title_help">Help</string>
+    <string name="screen_title_consent">Consent</string>
+    <string name="screen_title_tracking_stop">Stop Tracking</string>
 
     <!--Start tracking text: -->
     <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
@@ -25,13 +30,19 @@
     <string name="tracking_handshake_notification">Your friend %s has invited you to a tracking session</string>
     <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
     <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
-    <string name="agree">Yes</string>
-    <string name="disagree">No</string>
 
+    <!--Help text: -->
     <string name="help_header">Help with MeetMe</string>
-    <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked. If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
+    <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked.
+        If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
 
     <!--Stop tracking text: -->
     <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>
+
+    <!--ALERTS:-->
+    <string name="Location_Request_Permission_Rationale">MeetMe needs access to your background location
+        to be able to provide you with the best possible tracking service.
+        Please enable background location access. If you decline background access,
+        you will not be able to track your friend accurately. </string>
 
 </resources>
