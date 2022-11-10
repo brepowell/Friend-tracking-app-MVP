@@ -15,7 +15,7 @@ import com.css545.meetme.ui.components.CustomButton
 
 
 @Composable
-fun MapScreen(onTrackButtonClicked: () -> Unit) {
+fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
 
     Box{
         val image1 = painterResource(R.drawable.google_maps_marker)
@@ -32,7 +32,7 @@ fun MapScreen(onTrackButtonClicked: () -> Unit) {
             modifier = Modifier.fillMaxWidth()
         ) {
             CustomButton(
-                onClick = { onTrackButtonClicked() },
+                onClick = { onStopTrackButtonClicked() },
                 text = "Stop Tracking"
             )
 
@@ -45,6 +45,6 @@ fun MapScreen(onTrackButtonClicked: () -> Unit) {
 @Composable
 fun ShowMapPreview()
 {
-    MapScreen(onTrackButtonClicked = {})
+    MapScreen(onStopTrackButtonClicked = {})
 
 }

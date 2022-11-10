@@ -14,9 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.css545.meetme.R
+import com.css545.meetme.ui.components.CustomButton
 
 @Composable
-fun StopTrackingScreen() {
+fun StopTrackingScreen(
+    onYesClicked: () -> Unit,
+    onNoClicked: () -> Unit
+) {
     Column{
         Text(
             text = stringResource(id = R.string.screen_title_tracking_stop),
@@ -34,45 +38,18 @@ fun StopTrackingScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        YesStopButton {}
-        NoDoNotStopButton {}
+        CustomButton(onClick = onYesClicked, text = "Yes")
+        CustomButton(onClick = onNoClicked, text = "No")
     }
 }
 
 
-@Composable
-fun YesStopButton(
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = R.string.button_yes),
-        )
-    }
-}
 
-@Composable
-fun NoDoNotStopButton(
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = R.string.button_no),
-        )
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable
 fun StopTrackingScreenPreview()
 {
-    StopTrackingScreen()
+    StopTrackingScreen(onNoClicked = {}, onYesClicked = {})
 }

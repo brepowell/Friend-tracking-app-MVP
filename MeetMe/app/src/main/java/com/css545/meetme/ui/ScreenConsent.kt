@@ -46,40 +46,10 @@ fun ConsentScreen(
 
         CustomButton(onClick = onYesClicked, text = "Yes")
         CustomButton(onClick = onNoClicked, text = "No")
-//        YesButton {}
-//        NoButton {}
     }
 }
 
-@Composable
-fun YesButton(
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = R.string.button_yes),
-        )
-    }
-}
 
-@Composable
-fun NoButton(
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = R.string.button_no),
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
