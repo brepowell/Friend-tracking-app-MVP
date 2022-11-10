@@ -155,6 +155,7 @@ fun MeetMeApp(
 //                    },
                     onStartTrackingButtonClicked = {
                         scope.launch {
+                            /** SAVE THE USER INPUT FOR THE TRACKING DURATION */
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
 //                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
@@ -167,6 +168,8 @@ fun MeetMeApp(
             }
 
             // TODO: ADD A WAITING SCREEN
+            // TODO: THE WAITING SCREEN SHOULD NAVIGATE TO THE MAP SCREEN IF CONSENT WAS GIVEN
+            // TODO: THERE SHOULD BE AN OPTION TO CANCEL THE INVITATION THAT WAS SENT
 
             /** THE CONSENT SCREEN NAVIGATION (mapped to a composable)
              * Here, the user sees that someone has invited them to a tracking session
@@ -178,14 +181,21 @@ fun MeetMeApp(
                     settingsState = settingsState.value,
                     onYesClicked = {
                         scope.launch {
+                            /** THE USER HAS BEEN INVITED TO BE TRACKED AND CONSENTS */
                             settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
-                        /** NAVIGATE TO MAP SCREEN */
+                        /** NAVIGATE TO MAP SCREEN TO START TRACKING */
                         navController.navigate(MeetMeScreen.Map.name)
+
+                        /* TODO: ASK FOR PERMISSIONS TO TRACK FINE LOCATION*/
                     },
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
-                    onNoClicked = { navController.navigate(MeetMeScreen.TrackingStart.name) }
+                    onNoClicked = {
+                        /* TODO: WE MAY NEED TO IMPLEMENT A REPLY MESSAGE HERE
+                            SAYING THAT CONSENT WAS DECLINED*/
+                        navController.navigate(MeetMeScreen.TrackingStart.name)
+                    }
                 )
             }
 
@@ -196,21 +206,29 @@ fun MeetMeApp(
              * */
             composable(route = MeetMeScreen.Map.name) {
                 MapScreen(
-                    // This is where the Track button should take us
-                    onTrackButtonClicked = {
-                        scope.launch {
-                            settingsDataStore.saveTrackingToPreferencesStore(false)
-                        }
-
-                        /** NAVIGATE BACK TO START TRACKING SCREEN */
-                        navController.navigate(MeetMeScreen.TrackingStart.name)
+                    onStopTrackButtonClicked = {
+                        /** NAVIGATE BACK TO STOP TRACKING SCREEN */
+                        navController.navigate(MeetMeScreen.TrackingEnd.name)
                     }
                 )
             }
 
-            // TODO: ADD STOP TRACKING SCREEN NAVIGATION
             composable(route = MeetMeScreen.TrackingEnd.name){
-                StopTrackingScreen()
+                StopTrackingScreen(
+                    onYesClicked = {
+                        scope.launch {
+                            /** THE USER STOPPED THE TRACKING SESSION -- THE SESSION IS OVER */
+                            settingsDataStore.saveTrackingToPreferencesStore(false)
+                        }
+                        /** NAVIGATE TO THE START TRACKING SCREEN */
+                        navController.navigate(MeetMeScreen.TrackingStart.name)
+                    },
+                    onNoClicked = {
+                        /** RETURN BACK TO THE MAP SCREEN */
+                        navController.navigate(MeetMeScreen.Map.name)
+                    }
+
+                )
             }
 
             /** THE SETTINGS SCREEN NAVIGATION (mapped to a composable)
@@ -245,7 +263,6 @@ fun MeetMeApp(
              * */
             composable(route = MeetMeScreen.Help.name) {
                 HelpScreen( onSettingsButtonClicked = {
-
                     /** NAVIGATE TO SETTINGS SCREEN */
                     navController.navigate(MeetMeScreen.Settings.name)
                 })
