@@ -47,8 +47,13 @@
         If a person does not want to be tracked, they can go into the Settings menu and
         make themselves unavailable for tracking.</string>
 
-    <!--ALERTS:-->
-    <string name="Location_Request_Permission_Rationale">MeetMe needs access to your background location
+    <!--PERMISSIONS:-->
+    <string name="permissions_runtime_permissions">Runtime permissions in Android</string>
+    <string name="button_request_permissions">Request Permissions</string>
+    <string name="button_ok">OK</string>
+    <string name="permission_required">Camera access is required to display the camera preview.</string>
+    <string name="permission_granted">Permission is granted. You can use the camera now.</string>
+    <string name="permission_denied_location_request_rationale">MeetMe needs access to your background location
         to be able to provide you with the best possible tracking service.
         Please enable background location access. If you decline background access,
         you will not be able to track your friend accurately. </string>
