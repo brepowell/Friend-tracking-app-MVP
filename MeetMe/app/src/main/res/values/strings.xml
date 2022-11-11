@@ -6,6 +6,8 @@
     <string name="button_back">Back</string>
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_continue">Continue</string>
 
     <!-- Screens -->
     <string name="screen_title_map">Map</string>
