@@ -6,7 +6,7 @@
     <string name="button_back">Back</string>
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
-    <string name="button_cancel">Cancel</string>
+    <string name="button_cancel">Cancel Invitation</string>
     <string name="button_continue">Continue</string>
 
     <!-- Screens -->
@@ -31,7 +31,7 @@
 
     <!--Waiting for consent text: -->
     <string name="waiting_for_consent">An invitation has been sent to %s. Please wait.
-        If you would like to cancel the invitation, press the back button.</string>
+        If you would like to cancel the invitation, press cancel.</string>
 
     <!--Confirmation limbo text: -->
     <string name="tracking_handshake_notification">Your friend %s has invited you to a tracking session</string>
