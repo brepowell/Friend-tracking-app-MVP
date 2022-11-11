@@ -160,16 +160,40 @@ fun MeetMeApp(
 //                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
-                        /** NAVIGATE TO CONSENT SCREEN */
-                        // TODO: THIS SHOULD NAVIGATE TO THE WAITING SCREEN LATER, NOT CONSENT
-                        navController.navigate(MeetMeScreen.Consent.name)
+                        /** PROTOTYPE DEMO: NAVIGATE TO CONSENT SCREEN */
+                        //navController.navigate(MeetMeScreen.Consent.name)
+
+                        /** NAVIGATE TO WAITING SCREEN */
+                        navController.navigate(MeetMeScreen.Waiting.name)
                     }
                 )
             }
 
-            // TODO: ADD A WAITING SCREEN
-            // TODO: THE WAITING SCREEN SHOULD NAVIGATE TO THE MAP SCREEN IF CONSENT WAS GIVEN
-            // TODO: THERE SHOULD BE AN OPTION TO CANCEL THE INVITATION THAT WAS SENT
+            /** THE WAITING FOR CONSENT SCREEN NAVIGATION (mapped to a composable):
+             * The invitation is sent to the friend.
+             * The user waits for confirmation
+             * They have the option to cancel the request if their friend is unresponsive
+             * */
+            composable(route = MeetMeScreen.Waiting.name){
+                WaitingForConsentScreen(
+                    /** OPTION TO CANCEL THE INVITATION THAT WAS SENT */
+                    onCancelButtonClicked = {
+                        navController.navigate(MeetMeScreen.TrackingStart.name)
+                    },
+
+                    // TODO: WE WILL WANT TO POP THIS SCREEN OFF OF THE BACK STACK
+                    //  BECAUSE THE USER SHOULD NOT RETURN TO IT.
+
+                    // TODO: THIS BUTTON WILL NOT BE NECESSARY WITH THE FINAL PRODUCT
+                    //  REMOVE WHEN DONE
+                    onContinueButtonClicked = {
+                        navController.navigate(MeetMeScreen.Consent.name)
+                    }
+                    // TODO: THE WAITING SCREEN SHOULD AUTOMATICALLY NAVIGATE TO THE MAP
+                    //  SCREEN IF CONSENT WAS GIVEN
+                )
+            }
+
 
             /** THE CONSENT SCREEN NAVIGATION (mapped to a composable)
              * Here, the user sees that someone has invited them to a tracking session
@@ -179,6 +203,10 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.Consent.name) {
                 ConsentScreen(
                     settingsState = settingsState.value,
+
+                    // TODO: WE WILL WANT TO POP THIS SCREEN OFF OF THE BACK STACK
+                    //  BECAUSE THE USER SHOULD NOT RETURN TO IT.
+
                     onYesClicked = {
                         scope.launch {
                             /** THE USER HAS BEEN INVITED TO BE TRACKED AND CONSENTS */
@@ -187,13 +215,13 @@ fun MeetMeApp(
 
                         /** NAVIGATE TO MAP SCREEN TO START TRACKING */
                         navController.navigate(MeetMeScreen.Map.name)
-
-                        /* TODO: ASK FOR PERMISSIONS TO TRACK FINE LOCATION*/
                     },
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
                     onNoClicked = {
+
                         /* TODO: WE MAY NEED TO IMPLEMENT A REPLY MESSAGE HERE
-                            SAYING THAT CONSENT WAS DECLINED*/
+                            THAT GOES BACK TO THE PERSON WHO INVITED THEM
+                            SAYING THAT CONSENT WAS DECLINED */
                         navController.navigate(MeetMeScreen.TrackingStart.name)
                     }
                 )
@@ -210,6 +238,7 @@ fun MeetMeApp(
                         /** NAVIGATE BACK TO STOP TRACKING SCREEN */
                         navController.navigate(MeetMeScreen.TrackingEnd.name)
                     }
+                    /* TODO: ASK FOR PERMISSIONS TO TRACK FINE LOCATION*/
                 )
             }
 
