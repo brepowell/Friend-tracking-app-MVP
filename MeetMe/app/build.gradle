@@ -71,5 +71,5 @@ dependencies {
     //Allow the system to handle permissions requests:
     implementation("androidx.fragment:fragment-ktx:1.5.4")
     implementation("androidx.activity:activity-ktx:1.6.1")
-
+    implementation("com.google.accompanist:accompanist-permissions:0.24.13-rc") //Accompanist approach
 }
