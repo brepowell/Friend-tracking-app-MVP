@@ -26,51 +26,59 @@ fun WaitingForConsentScreen(
     // TODO: THE CONTINUE BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
     onContinueButtonClicked: () -> Unit
 ) {
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(
                 if (isSystemInDarkTheme())
                     colorRichBlackFogra39
                 else colorTiffanyBlue
             )
-            .padding(16.dp)
-    )
-    {
-        Text(
-            text = stringResource(id = R.string.waiting_for_consent),
-            color = Color.White,
-            fontSize = 24.sp
+    ) {
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
         )
+        {
+            Spacer(modifier = Modifier.height(24.dp))
 
-        //Spacers add space below different fields
-        Spacer(modifier = Modifier.height(8.dp))
+            /** WAITING FOR CONSENT MESSAGE */
+            Text(
+                text = stringResource(id = R.string.waiting_for_consent),
+                color = Color.White,
+                fontSize = 24.sp
+            )
 
-        /***/
-        Icon(
-            imageVector = Icons.Default.Email,
-            contentDescription = "Envelope Icon",
-            modifier = Modifier.size(150.dp),
-            tint = Color.White
-        )
+            //Spacers add space below different fields
+            Spacer(modifier = Modifier.height(8.dp))
 
-        //Spacers add space below different fields
-        Spacer(modifier = Modifier.height(24.dp))
+            /** ENVELOPE ICON */
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = "Envelope Icon",
+                modifier = Modifier.size(150.dp),
+                tint = Color.White
+            )
 
-        /** CANCEL BUTTON */
-        CustomButton(
-            onClick = { onCancelButtonClicked() },
-            text = stringResource(id = R.string.button_cancel)
-        )
+            //Spacers add space below different fields
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
+            /** CANCEL BUTTON */
+            CustomButton(
+                onClick = { onCancelButtonClicked() },
+                text = stringResource(id = R.string.button_cancel)
+            )
 
-        // TODO: THIS BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
-        CustomButton(
-            onClick = { onContinueButtonClicked() },
-            text = stringResource(id = R.string.button_continue)
-        )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // TODO: THIS BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
+            CustomButton(
+                onClick = { onContinueButtonClicked() },
+                text = stringResource(id = R.string.button_continue)
+            )
+        }
     }
 }
 
