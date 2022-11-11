@@ -17,7 +17,8 @@
     <string name="screen_title_tracking_stop">Stop Tracking</string>
 
     <!--Start tracking text: -->
-    <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
+    <string name="tracking_start_prompt">You have no active tracking sessions going.
+        Would you like to start a tracking session?</string>
     <string name="tracking_start_button">Send Invitation to Start Tracking</string>
     <string name="tracking_start_friends">Friend(s) to invite: </string>
     <string name="tracking_start_duration">Enter tracking duration: </string>
@@ -26,18 +27,23 @@
     <string name="tracking_start_bill_amount">Bill amount: %s </string>
     <string name="tracking_start_send_invite">Send Invitation</string>
 
+    <!--Waiting for consent text: -->
+    <string name="waiting_for_consent">An invitation has been sent to %s. Please wait.
+        If you would like to cancel the invitation, press the back button.</string>
+
     <!--Confirmation limbo text: -->
     <string name="tracking_handshake_notification">Your friend %s has invited you to a tracking session</string>
     <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
     <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
 
+    <!--Stop tracking text: -->
+    <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>
+
     <!--Help text: -->
     <string name="help_header">Help with MeetMe</string>
     <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked.
-        If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
-
-    <!--Stop tracking text: -->
-    <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>
+        If a person does not want to be tracked, they can go into the Settings menu and
+        make themselves unavailable for tracking.</string>
 
     <!--ALERTS:-->
     <string name="Location_Request_Permission_Rationale">MeetMe needs access to your background location

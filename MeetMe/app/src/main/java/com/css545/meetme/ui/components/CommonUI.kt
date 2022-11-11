@@ -63,3 +63,11 @@ fun ToggleSwitch(
         )
     }
 }
+
+
+@Composable
+fun CustomAlert(
+    text: String
+){
+
+}
