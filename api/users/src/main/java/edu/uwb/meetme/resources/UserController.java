@@ -1,5 +1,7 @@
 package edu.uwb.meetme.resources;
 
+import edu.uwb.meetme.models.Location;
+import edu.uwb.meetme.models.LocationRepository;
 import edu.uwb.meetme.models.User;
 import edu.uwb.meetme.models.ResponseMessage;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LocationService locationService;
 
     /**
      * Get list of all users in the database
@@ -105,5 +110,27 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         logger.info("Deleted user with id: " + id);
+    }
+
+    @RequestMapping(value = "/users/location", params="email", method = RequestMethod.GET)
+    public Location getUserLocation(@RequestParam("email") String email) {
+        logger.info("Retrieving location for user with email: " + email);
+        User user = userService.getUser(email);
+        return user.getLocation();
+    }
+
+    @RequestMapping(value = "/users/location", method = RequestMethod.POST)
+    public ResponseMessage updateLocation(@RequestBody Location location) {
+        User user = userService.getUser(location.getId());
+        location.setUser(user);
+        try {
+            logger.info("Updating location for user with email: " + user.getEmail());
+            user.setLocation(location);
+            userService.updateUser(user);
+            return new ResponseMessage("Location was successfully updated for user: " + user.getEmail());
+        } catch (Exception e) {
+            logger.debug("Caught exception: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed to update user location.");
+        }
     }
 }
