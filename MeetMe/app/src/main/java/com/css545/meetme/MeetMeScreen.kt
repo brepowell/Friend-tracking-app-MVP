@@ -1,5 +1,8 @@
 package com.css545.meetme
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -21,6 +24,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -108,6 +113,7 @@ fun MeetMeApp(
         backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
     )
 
+
     /** ------------------------------- THE APP BAR --------------------------------- */
     Scaffold (
         topBar = {
@@ -164,6 +170,17 @@ fun MeetMeApp(
                             /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
                             settingsDataStore.savePhoneNumberToPreferencesStore(it)
                         }
+
+
+                        //An IMPLICIT INTENT -- has no "component"
+                        // -- the first parameter is an action, not a component
+                        //val intent = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber , null))
+                        //putExtra (without an 's') is a key value pair that gives extra information.
+                        //another option is to make a Bundle object and insert the Bundle in the Intent
+                        //with putExtras() -- with an 's'
+                        //intent.putExtra("sms_body", "Hello Breanna. From Breanna")
+                        //startActivity(intent)
+
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
@@ -298,7 +315,6 @@ fun MeetMeApp(
                     navController.navigate(MeetMeScreen.Settings.name)
                 })
             }
-
         }
     }
 }

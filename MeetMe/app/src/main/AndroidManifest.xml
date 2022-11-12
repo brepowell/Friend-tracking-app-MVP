@@ -33,11 +33,30 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MeetMe">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- INTENT FILTERS TO ALLOW OUR APP TO OPEN ANOTHER
+            APP AND BE OPENED BY AN APP
+            an explicit intent can open a screen on your own app from another app
+            an implicit intent can open another app from your app
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+            <!-- handles "SEND" actions with text data -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+
+
 
             <meta-data
                 android:name="android.app.lib_name"
