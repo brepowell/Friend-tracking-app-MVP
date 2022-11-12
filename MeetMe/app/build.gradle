@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    /** SECRETS GRADLE FOR SECURING API KEY FOR THE MAP, ETC.*/
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -72,4 +75,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.5.4")
     implementation("androidx.activity:activity-ktx:1.6.1")
     implementation("com.google.accompanist:accompanist-permissions:0.24.13-rc") //Accompanist approach
+
+    /** ---------------------- MAP ------------------------------------------------ */
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
 }
