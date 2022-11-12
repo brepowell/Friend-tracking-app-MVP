@@ -23,7 +23,8 @@ fun CustomButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.widthIn(min = 250.dp)
+        modifier = modifier
+            .widthIn(min = 250.dp)
     ) {
         Text(text)
     }
@@ -51,10 +52,11 @@ fun ToggleSwitch(
 ) {
     Row (
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.border(
+        modifier = Modifier
+            .border(
             border = BorderStroke(2.dp, Color.LightGray),
-            shape = RoundedCornerShape(8.dp)
-        ).padding(10.dp)
+            shape = RoundedCornerShape(8.dp))
+            .padding(10.dp)
     ) {
         Text(label)
         Switch(
