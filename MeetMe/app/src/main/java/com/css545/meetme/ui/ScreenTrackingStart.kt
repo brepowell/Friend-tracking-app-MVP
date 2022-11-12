@@ -5,10 +5,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -16,10 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.css545.meetme.R
-import java.text.NumberFormat
-import androidx.compose.foundation.Image
-import androidx.compose.runtime.saveable.rememberSaveable
 import com.css545.meetme.data.SettingsState
+import com.css545.meetme.ui.components.CustomButton
+import java.text.NumberFormat
 
 //import androidx.compose.ui.res.painterResource
 //import androidx.compose.ui.layout.ContentScale
@@ -32,20 +34,23 @@ fun StartTrackingScreen(
     onStartTrackingButtonClicked: (String) -> Unit,
 ) {
     var amountInput by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
+    var phoneNumber by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
+
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
     val bill = billCalculator(trackingDuration)
     //val timeExpiration = "5:00 PM PST"
 
     //IMAGES
-    val image1 = painterResource(R.drawable.person_silhouette_1)
-    val image2 = painterResource(R.drawable.person_silhouette_2)
-    val image3 = painterResource(R.drawable.person_silhouette_3)
+    //val image1 = painterResource(R.drawable.person_silhouette_1)
+    //val image2 = painterResource(R.drawable.person_silhouette_2)
+    //val image3 = painterResource(R.drawable.person_silhouette_3)
 
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)){
-        //Prompt at the top
+
+        /** --------------- Prompt at the top ------------------ */
         Text(
             text = stringResource(id = R.string.tracking_start_prompt),
             fontSize = 24.sp,
@@ -55,7 +60,7 @@ fun StartTrackingScreen(
         //Spacers add space below different fields
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Friend(s)
+        /** --------------- Enter the phone number ------------------ */
         //tracking_start_friends
         Text(
             text = stringResource(id = R.string.tracking_start_friends),
@@ -63,8 +68,15 @@ fun StartTrackingScreen(
             modifier = Modifier.align(Alignment.Start)
         )
 
+        PhoneNumberEntryField(
+            value = phoneNumber,
+            onValueChange = {
+                phoneNumber = it
+            }
+        )
 
-        //Friend(s) -- placeholder images
+        /** Friend(s) -- placeholder images for prototype */
+/*
         Row (modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = image1,
@@ -88,10 +100,10 @@ fun StartTrackingScreen(
                     .width(42.dp)
             )
         }
-
+*/
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Tracking Duration - header above text field
+        /**------------- DURATION: Header above text field -------------- */
         Text(
             text = stringResource(
                 id = R.string.tracking_start_duration),
@@ -99,7 +111,7 @@ fun StartTrackingScreen(
             modifier = Modifier.align(Alignment.Start)
         )
 
-        //TextField to enter the hours
+        /**------------- DURATION: TextField to enter the hours -------------- */
         TimeLimitEntryField(
             value = amountInput,
             onValueChange = {
@@ -107,9 +119,10 @@ fun StartTrackingScreen(
 
             }
         )
+
         Spacer(modifier = Modifier.height(24.dp))
 
-        //Time Expiration
+        /**----------------------Time Expiration-------------- */
         //<string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
         /*
         Text(
@@ -121,7 +134,8 @@ fun StartTrackingScreen(
         )
          */
 
-        //Bill amount
+        /**-----------------------Bill amount ----------------- */
+        /*
         Text(
             text = stringResource(id = R.string.tracking_start_bill_amount, bill),
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -129,38 +143,30 @@ fun StartTrackingScreen(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(48.dp))
+        */
 
-        //Buttons
+        /**-----------------SEND INVITATION BUTTON --------------------------*/
         InviteToStartTrackingButton(onClick = { onStartTrackingButtonClicked(amountInput) })
     }
 }
 
 @Composable
-fun InviteToStartTrackingButton(
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = {onClick()},
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = R.string.tracking_start_button),
-        )
-    }
-}
-
-@Composable
-fun ConsentButton (
-    onClick: () -> Unit,
-    //modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text("Consent")
-    }
+fun PhoneNumberEntryField(value: String, onValueChange: (String) -> Unit){
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Text(
+                text = stringResource(id = R.string.tracking_start_phone_number),
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        singleLine = true
+    )
+    //label - placeholder text for an empty text field
+    //KeyboardType.Number - uses only the numbers keyboard - no other options
+    //singleLine - ensures the input is on one line
 }
 
 @Composable
@@ -180,6 +186,16 @@ fun TimeLimitEntryField(value: String, onValueChange: (String) -> Unit){
     //label - placeholder text for an empty text field
     //KeyboardType.Number - uses only the numbers keyboard - no other options
     //singleLine - ensures the input is on one line
+}
+
+@Composable
+fun InviteToStartTrackingButton(
+    onClick: () -> Unit,
+) {
+    CustomButton(
+        onClick = { onClick() },
+        text = stringResource(id = R.string.tracking_start_button)
+    )
 }
 
 private fun billCalculator(time: Double, costPerHour: Double = 15.0): String{
