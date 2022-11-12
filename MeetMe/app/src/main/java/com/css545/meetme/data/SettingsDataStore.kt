@@ -24,12 +24,14 @@ private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(n
 class SettingsDataStore (private val context: Context){
     // TODO: This is a hack, just for the assignment. Should use a database
     private val defaultNickName = "jardiamj"
+    private val defaultPhoneNumber = "5555555555"
 
     private object PreferenceKeys {
         val IS_TRACKING = booleanPreferencesKey("is_tracking")
         val USERNAME = stringPreferencesKey("username")
         val IS_SHARING_LOCATION = booleanPreferencesKey("is_sharing_location")
         val TRACK_LENGTH = intPreferencesKey("track_length")
+        val PHONE_NUMBER = stringPreferencesKey("phone_number")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -48,6 +50,7 @@ class SettingsDataStore (private val context: Context){
             val isTracking = preferences[PreferenceKeys.IS_TRACKING] ?: false
             val isSharingLocation = preferences[PreferenceKeys.IS_SHARING_LOCATION] ?: false
             val trackLength = preferences[PreferenceKeys.TRACK_LENGTH] ?: 0
+            val phoneNumber = preferences[PreferenceKeys.PHONE_NUMBER] ?: defaultPhoneNumber
             SettingsState(isTracking, isSharingLocation, name, trackLength)
         }
 
@@ -74,11 +77,18 @@ class SettingsDataStore (private val context: Context){
             preferences[PreferenceKeys.TRACK_LENGTH] = trackLength.toInt()
         }
     }
+
+    suspend fun savePhoneNumberToPreferencesStore(phoneNumber: String){
+        context.dataStore.edit { preferences ->
+            preferences[PreferenceKeys.PHONE_NUMBER] = phoneNumber
+        }
+    }
 }
 
 data class SettingsState (
     val isTracking: Boolean = false,
     val isSharingLocation: Boolean = false,
     val username: String = "jardiamj",
-    val trackLength: Int = 0
+    val trackLength: Int = 0,
+    val phoneNumber: String = "5555555555"
 )

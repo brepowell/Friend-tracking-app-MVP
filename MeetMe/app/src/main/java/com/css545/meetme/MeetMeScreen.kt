@@ -160,8 +160,10 @@ fun MeetMeApp(
 //                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
-                        /** PROTOTYPE DEMO: NAVIGATE TO CONSENT SCREEN */
-                        //navController.navigate(MeetMeScreen.Consent.name)
+                        scope.launch {
+                            /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
+                            settingsDataStore.savePhoneNumberToPreferencesStore(it)
+                        }
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
