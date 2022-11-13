@@ -2,6 +2,7 @@ package com.css545.meetme.ui
 
 
 import android.content.Intent
+import android.location.Location
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 
@@ -16,19 +17,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.css545.meetme.ConsentActivity
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
+import com.example.meetme.ui.LocationViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
+fun MapScreen(onStopTrackButtonClicked: () -> Unit,
+              viewModel: LocationViewModel = viewModel()
+) {
 
     Box{
-        GoogleMapView()
+
+        /** The actual map shows here */
+        GoogleMapView(LatLng(47.8209, -122.3151))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,11 +58,13 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
 }
 
 @Composable
-fun GoogleMapView () {
-    val singapore = LatLng(1.35, 103.87)
-    val singState = MarkerState(position = singapore)
+fun GoogleMapView (
+    location: LatLng = LatLng(1.35, 103.87)
+) {
+//    val singapore = LatLng(1.35, 103.87)
+    val singState = MarkerState(position = location)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(location, 10f)
     }
     GoogleMap(
         modifier = Modifier.fillMaxSize(),

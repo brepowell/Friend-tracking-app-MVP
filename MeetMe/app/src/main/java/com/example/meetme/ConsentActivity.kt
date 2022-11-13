@@ -21,8 +21,10 @@ class ConsentActivity : ComponentActivity() {
 
             CustomButton(
                 onClick = {
-                          context.startActivity(Intent(context, MainActivity::class.java), null)
-                          },
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra("screen", MeetMeScreen.Settings.name)
+                    context.startActivity(intent, null)
+                },
                 text = "Go to Main Activity"
             )
         }
