@@ -35,7 +35,7 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
     Box{
 
         /** The actual map shows here */
-        GoogleMapView(LatLng(47.8209, -122.3151))
+        GoogleMapView(viewModel.latLng.value)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,6 +52,8 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
                 },
                 text = "Go to Consent Activity"
             )
+            
+            CustomButton(onClick = { viewModel.updateLocation(LatLng(47.6101, -122.2015)) }, text = "Update Location")
 
         }
     }
