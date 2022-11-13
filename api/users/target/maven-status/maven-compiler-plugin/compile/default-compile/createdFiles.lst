@@ -1,0 +1,11 @@
+edu/uwb/gymapp/resources/MemberController.class
+edu/uwb/gymapp/resources/SecurityConfiguration.class
+edu/uwb/gymapp/models/Gender.class
+edu/uwb/gymapp/models/Member.class
+edu/uwb/gymapp/models/ResponseMessage.class
+edu/uwb/gymapp/UserManagementApplication.class
+edu/uwb/gymapp/resources/MemberDetailsService.class
+edu/uwb/gymapp/resources/MemberService.class
+edu/uwb/gymapp/models/MemberRepository.class
+edu/uwb/gymapp/UserManagementApplication$1.class
+edu/uwb/gymapp/resources/MemberDetails.class

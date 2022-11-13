@@ -1,0 +1,10 @@
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/models/ResponseMessage.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/models/Member.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/models/MemberRepository.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/models/Gender.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/resources/MemberController.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/resources/MemberDetailsService.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/resources/MemberDetails.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/resources/MemberService.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/resources/SecurityConfiguration.java
+/home/jardi/uw/css533_distributed_computing/set-slot-sweat/services/users/src/main/java/edu/uwb/gymapp/UserManagementApplication.java

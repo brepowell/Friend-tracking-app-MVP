@@ -25,21 +25,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val singapore = LatLng(1.35, 103.87)
-            val singState = MarkerState(position = singapore)
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(singapore, 10f)
-            }
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState
-            ) {
-                Marker(
-                    state = singState,
-                    title = "Singapore",
-                    snippet = "Marker in Singapore"
-                )
-            }
+            GoogleMapView()
         }
     }
 }
@@ -54,5 +40,24 @@ fun Greeting(name: String) {
 fun DefaultPreview() {
     MapTestingTheme {
         Greeting("Android")
+    }
+}
+
+@Composable
+fun GoogleMapView () {
+    val singapore = LatLng(1.35, 103.87)
+    val singState = MarkerState(position = singapore)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+    }
+    GoogleMap(
+        modifier = Modifier.fillMaxSize(),
+        cameraPositionState = cameraPositionState
+    ) {
+        Marker(
+            state = singState,
+            title = "Singapore",
+            snippet = "Marker in Singapore"
+        )
     }
 }
