@@ -189,6 +189,7 @@ fun MeetMeAppStart(
                     //  REMOVE WHEN DONE
                     onContinueButtonClicked = {
 
+                        /** MOVE FROM THE WAITING SCREEN TO THE CONSENT SCREEN*/
                         val moveToAnotherActivity = MainActivity()
                         moveToAnotherActivity.consentIntent()
 

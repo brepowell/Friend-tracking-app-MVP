@@ -61,5 +61,6 @@
         you will not be able to track your friend accurately. </string>
     <string name="title_activity_maps_launcher">MapsActivityLauncher</string>
     <string name="title_activity_consent_launcher">ConsentActivityLauncher</string>
+    <string name="title_activity_maps">MapsActivity</string>
 
 </resources>

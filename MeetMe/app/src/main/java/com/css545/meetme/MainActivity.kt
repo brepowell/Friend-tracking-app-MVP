@@ -41,5 +41,6 @@ class MainActivity : ComponentActivity() {
         val navigate = Intent(
             this@MainActivity,
             ConsentActivityLauncher::class.java)
+        startActivity(navigate)
     }
 }

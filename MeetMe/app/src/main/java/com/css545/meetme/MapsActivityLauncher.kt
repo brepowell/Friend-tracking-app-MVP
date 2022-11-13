@@ -36,5 +36,6 @@ class MapsActivityLauncher : ComponentActivity() {
         val navigate = Intent(
             this@MapsActivityLauncher,
             MainActivity::class.java)
+        startActivity(navigate)
     }
 }
