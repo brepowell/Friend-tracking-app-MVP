@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- PERMISSIONS FOR ACCESSING LOCATION DATA -->
+    <!-- Access the rough location in case permission is denied for precise location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Access the precise location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Access location continuously -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!--  -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MapTesting"
+        tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDEW_7qMlVFIYupwB2U_vDrtoJ8fjV12ck" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MapTesting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+            <!-- MAP META DATA -->
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyDEW_7qMlVFIYupwB2U_vDrtoJ8fjV12ck" />
+
+            <!-- embeds the version of Google Play services that the app was compiled with. -->
+            <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+        </activity>
+    </application>
+
+</manifest>
