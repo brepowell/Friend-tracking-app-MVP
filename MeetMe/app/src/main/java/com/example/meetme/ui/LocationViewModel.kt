@@ -15,4 +15,4 @@ class LocationViewModel : ViewModel() {
     }
 }
 
-private fun getLocation() = LatLng(47.8209, 122.3152)
+private fun getLocation() = LatLng(47.8209, -122.3152)
