@@ -353,6 +353,7 @@ fun MeetMeAppConsent(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MeetMeAppMap(
     modifier: Modifier = Modifier
