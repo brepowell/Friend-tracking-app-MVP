@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--PERMISSIONS FOR ACCESSING LOCATION DATA -->
-    <!--Access the rough location in case permission is denied for precise location -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!--Access the precise location -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!--Access location continuously -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <!---->
+    <!-- PERMISSIONS FOR ACCESSING LOCATION DATA -->
+    <!-- Access the rough location in case permission is denied for precise location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Access the precise location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Access location continuously -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!--  -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -22,8 +18,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetMe"
         tools:targetApi="31">
-
-        <!-- Apache HTTP Legacy library for map-->
+        <activity
+            android:name=".ConsentActivityLauncher"
+            android:exported="false"
+            android:label="@string/title_activity_consent_launcher"
+            android:theme="@style/Theme.MeetMe">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".MapsActivityLauncher"
+            android:exported="false"
+            android:label="@string/title_activity_maps_launcher"
+            android:theme="@style/Theme.MeetMe">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity> <!-- Apache HTTP Legacy library for map -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -33,30 +45,29 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MeetMe">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- INTENT FILTERS TO ALLOW OUR APP TO OPEN ANOTHER
+            <!--
+            INTENT FILTERS TO ALLOW OUR APP TO OPEN ANOTHER
             APP AND BE OPENED BY AN APP
             an explicit intent can open a screen on your own app from another app
             an implicit intent can open another app from your app
             -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-            <!-- handles "SEND" actions with text data -->
+            <!-- SMS SENDING -->
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
-
-
-
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -67,11 +78,10 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="${MAPS_API_KEY}" />
 
-            <!--embeds the version of Google Play services that the app was compiled with. -->
+            <!-- embeds the version of Google Play services that the app was compiled with. -->
             <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version" />
-
         </activity>
     </application>
 

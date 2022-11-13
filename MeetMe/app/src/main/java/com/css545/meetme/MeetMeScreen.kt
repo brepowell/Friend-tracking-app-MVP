@@ -1,38 +1,32 @@
 package com.css545.meetme
 
-import android.app.PendingIntent
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.Modifier
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.css545.meetme.ui.*
 import com.css545.meetme.data.SettingsDataStore
 import com.css545.meetme.data.SettingsState
+import com.css545.meetme.ui.*
 import kotlinx.coroutines.launch
 
 /** DEFINING ROUTES (A route is "a string that corresponds to a destination"):
@@ -81,8 +75,6 @@ fun MeetMeAppbar (
                         )
                     }
                 }
-
-
             }
         }
     )
@@ -97,22 +89,19 @@ fun MeetMeAppbar (
             Icon(imageVector = Icons.Filled.Settings, contentDescription = null, tint = Color.White)
         }
     }
-
 }
 
 /** MEET ME APP -- ALL NAVIGATION HAPPENS HERE */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MeetMeApp(
+fun MeetMeAppStart(
     modifier: Modifier = Modifier
-//    viewModel: MeetMeViewModel = viewModel()
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = MeetMeScreen.valueOf(
         backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
     )
-
 
     /** ------------------------------- THE APP BAR --------------------------------- */
     Scaffold (
@@ -139,9 +128,7 @@ fun MeetMeApp(
          * We will add all of the routes in a NavHost composable function */
         NavHost(
             navController = navController,
-            startDestination =
-                if (settingsState.value.isTracking) MeetMeScreen.Map.name
-                else MeetMeScreen.TrackingStart.name,
+            startDestination = MeetMeScreen.TrackingStart.name,
             modifier = modifier.padding(10.dp)
         ) {
             // We will create composable routes for the various screens
@@ -155,32 +142,17 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.TrackingStart.name) {
                 StartTrackingScreen(
                     settingsState = settingsState.value,
-//                    onStartTrackingButtonClicked = {
-
-//                        navController.navigate(MeetMeScreen.Map.name)
-//                    },
                     onStartTrackingButtonClicked = {
                         scope.launch {
                             /** SAVE THE USER INPUT FOR THE TRACKING DURATION */
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
-//                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
                         scope.launch {
                             /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
                             settingsDataStore.savePhoneNumberToPreferencesStore(it)
                         }
-
-
-                        //An IMPLICIT INTENT -- has no "component"
-                        // -- the first parameter is an action, not a component
-                        //val intent = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber , null))
-                        //putExtra (without an 's') is a key value pair that gives extra information.
-                        //another option is to make a Bundle object and insert the Bundle in the Intent
-                        //with putExtras() -- with an 's'
-                        //intent.putExtra("sms_body", "Hello Breanna. From Breanna")
-                        //startActivity(intent)
-
+                        // TODO: SENT INTENT TO SMS
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
@@ -200,19 +172,112 @@ fun MeetMeApp(
                         navController.navigate(MeetMeScreen.TrackingStart.name)
                     },
 
+                    //An IMPLICIT INTENT -- has no "component"
+                    // -- the first parameter is an action, not a component
+                    //val intent = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber , null))
+                    //putExtra (without an 's') is a key value pair that gives extra information.
+                    //another option is to make a Bundle object and insert the Bundle in the Intent
+                    //with putExtras() -- with an 's'
+                    //intent.putExtra("sms_body", "Hello Breanna. From Breanna")
+                    //startActivity(intent)
+                    //val navigate = Intent(this@MainActivity, MapsActivityLauncher::class.java)
+
                     // TODO: WE WILL WANT TO POP THIS SCREEN OFF OF THE BACK STACK
                     //  BECAUSE THE USER SHOULD NOT RETURN TO IT.
 
                     // TODO: THIS BUTTON WILL NOT BE NECESSARY WITH THE FINAL PRODUCT
                     //  REMOVE WHEN DONE
                     onContinueButtonClicked = {
-                        navController.navigate(MeetMeScreen.Consent.name)
+
+                        val moveToAnotherActivity = MainActivity()
+                        moveToAnotherActivity.consentIntent()
+
                     }
                     // TODO: THE WAITING SCREEN SHOULD AUTOMATICALLY NAVIGATE TO THE MAP
                     //  SCREEN IF CONSENT WAS GIVEN
                 )
             }
 
+            /** THE SETTINGS SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can choose to edit their preferences
+             * and user information
+             * */
+            composable(route = MeetMeScreen.Settings.name) {
+                SettingsScreen(
+                    settingsState = settingsState.value,
+                    onUsernameChanged = {
+                        // TODO: This is a hack. Username should not be saved every time the
+                        //  textbox changes. Perhaps use a ViewModel or LiveData.
+                        //  Perhaps this logic should be part of the SettingsScreen
+                        scope.launch {
+                            settingsDataStore.saveNameToPreferencesStore(it)
+                        }
+                    },//{viewModel.setUserName(it)},
+                    onLocationSharingChanged = {
+                        scope.launch {
+                            settingsDataStore.saveSharingLocationToPreferencesStore(it)
+                        }
+                    },
+                    onUpdatePasswordClicked = { /* TODO: Implement */},
+
+                    /** NAVIGATE TO HELP SCREEN */
+                    onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
+                )
+            }
+
+            /** THE HELP SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can learn more about the app and ask for help
+             * */
+            composable(route = MeetMeScreen.Help.name) {
+                HelpScreen( onSettingsButtonClicked = {
+                    /** NAVIGATE TO SETTINGS SCREEN */
+                    navController.navigate(MeetMeScreen.Settings.name)
+                })
+            }
+        }
+    }
+}
+
+@Composable
+fun MeetMeAppConsent(
+    modifier: Modifier = Modifier
+//    viewModel: MeetMeViewModel = viewModel()
+) {
+    val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = MeetMeScreen.valueOf(
+        backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
+    )
+
+    /** ------------------------------- THE APP BAR --------------------------------- */
+    Scaffold (
+        topBar = {
+            MeetMeAppbar(
+                currentScreen = currentScreen,
+                // Show back arrow only if there is something on the backstack
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() },
+                onSettingsClicked = { navController.navigate(MeetMeScreen.Settings.name) }
+            )
+        }
+    ) {
+
+//        val settingsState = viewModel.settingsState.collectAsState()
+
+        val settingsDataStore = SettingsDataStore(LocalContext.current)
+        val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
+        val scope = rememberCoroutineScope()
+
+
+        /** ------------------------------- THE NAV HOST --------------------------------- */
+        /** This is the main screen holder.
+         * We will add all of the routes in a NavHost composable function */
+        NavHost(
+            navController = navController,
+            startDestination = MeetMeScreen.Consent.name,
+            modifier = modifier.padding(10.dp)
+        ) {
+            // We will create composable routes for the various screens
 
             /** THE CONSENT SCREEN NAVIGATION (mapped to a composable)
              * Here, the user sees that someone has invited them to a tracking session
@@ -232,8 +297,10 @@ fun MeetMeApp(
                             settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
-                        /** NAVIGATE TO MAP SCREEN TO START TRACKING */
-                        navController.navigate(MeetMeScreen.Map.name)
+                        /** Launch the Map */
+                        val moveToAnotherActivity = ConsentActivityLauncher()
+                        moveToAnotherActivity.startMapIntent()
+
                     },
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
                     onNoClicked = {
@@ -245,6 +312,86 @@ fun MeetMeApp(
                     }
                 )
             }
+
+            /** THE SETTINGS SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can choose to edit their preferences
+             * and user information
+             * */
+            composable(route = MeetMeScreen.Settings.name) {
+                SettingsScreen(
+                    settingsState = settingsState.value,
+                    onUsernameChanged = {
+                        // TODO: This is a hack. Username should not be saved every time the
+                        //  textbox changes. Perhaps use a ViewModel or LiveData.
+                        //  Perhaps this logic should be part of the SettingsScreen
+                        scope.launch {
+                            settingsDataStore.saveNameToPreferencesStore(it)
+                        }
+                    },//{viewModel.setUserName(it)},
+                    onLocationSharingChanged = {
+                        scope.launch {
+                            settingsDataStore.saveSharingLocationToPreferencesStore(it)
+                        }
+                    },
+                    onUpdatePasswordClicked = { /* TODO: Implement */},
+
+                    /** NAVIGATE TO HELP SCREEN */
+                    onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
+                )
+            }
+
+            /** THE HELP SCREEN NAVIGATION (mapped to a composable)
+             * This is where the user can learn more about the app and ask for help
+             * */
+            composable(route = MeetMeScreen.Help.name) {
+                HelpScreen( onSettingsButtonClicked = {
+                    /** NAVIGATE TO SETTINGS SCREEN */
+                    navController.navigate(MeetMeScreen.Settings.name)
+                })
+            }
+        }
+    }
+}
+
+@Composable
+fun MeetMeAppMap(
+    modifier: Modifier = Modifier
+//    viewModel: MeetMeViewModel = viewModel()
+) {
+    val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = MeetMeScreen.valueOf(
+        backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
+    )
+
+    /** ------------------------------- THE APP BAR --------------------------------- */
+    Scaffold (
+        topBar = {
+            MeetMeAppbar(
+                currentScreen = currentScreen,
+                // Show back arrow only if there is something on the backstack
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() },
+                onSettingsClicked = { navController.navigate(MeetMeScreen.Settings.name) }
+            )
+        }
+    ) {
+
+//        val settingsState = viewModel.settingsState.collectAsState()
+
+        val settingsDataStore = SettingsDataStore(LocalContext.current)
+        val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
+        val scope = rememberCoroutineScope()
+
+
+        /** ------------------------------- THE NAV HOST --------------------------------- */
+        /** This is the main screen holder.
+         * We will add all of the routes in a NavHost composable function */
+        NavHost(
+            navController = navController,
+            startDestination = MeetMeScreen.Map.name,
+            modifier = modifier.padding(10.dp)
+        ) {
 
             /** THE MAP SCREEN NAVIGATION (mapped to a composable)
              * Here, the user sees a map with a pin for their location and a pin for
@@ -268,8 +415,11 @@ fun MeetMeApp(
                             /** THE USER STOPPED THE TRACKING SESSION -- THE SESSION IS OVER */
                             settingsDataStore.saveTrackingToPreferencesStore(false)
                         }
-                        /** NAVIGATE TO THE START TRACKING SCREEN */
-                        navController.navigate(MeetMeScreen.TrackingStart.name)
+
+                        /** STOP THE MAP AND RETURN TO THE MAIN ACTIVITY */
+                        val moveToAnotherActivity = MapsActivityLauncher()
+                        moveToAnotherActivity.stopMapIntent()
+
                     },
                     onNoClicked = {
                         /** RETURN BACK TO THE MAP SCREEN */

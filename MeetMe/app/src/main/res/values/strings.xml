@@ -59,5 +59,7 @@
         to be able to provide you with the best possible tracking service.
         Please enable background location access. If you decline background access,
         you will not be able to track your friend accurately. </string>
+    <string name="title_activity_maps_launcher">MapsActivityLauncher</string>
+    <string name="title_activity_consent_launcher">ConsentActivityLauncher</string>
 
 </resources>
