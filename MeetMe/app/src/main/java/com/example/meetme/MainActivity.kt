@@ -18,6 +18,7 @@ import com.css545.meetme.ui.theme.MeetMeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val context = LocalContext.current
             MeetMeTheme {
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MeetMeApp()
+                    MeetMeApp(intent)
                 }
             }
         }
