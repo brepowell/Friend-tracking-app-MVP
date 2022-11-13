@@ -13,21 +13,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 
 @Composable
 fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
 
     Box{
-        val image1 = painterResource(R.drawable.google_maps_marker)
-        Image(
-            painter = image1,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        )
+        GoogleMapView()
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
@@ -38,6 +37,25 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
             )
 
         }
+    }
+}
+
+@Composable
+fun GoogleMapView () {
+    val singapore = LatLng(1.35, 103.87)
+    val singState = MarkerState(position = singapore)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+    }
+    GoogleMap(
+        modifier = Modifier.fillMaxSize(),
+        cameraPositionState = cameraPositionState
+    ) {
+        Marker(
+            state = singState,
+            title = "Singapore",
+            snippet = "Marker in Singapore"
+        )
     }
 }
 
