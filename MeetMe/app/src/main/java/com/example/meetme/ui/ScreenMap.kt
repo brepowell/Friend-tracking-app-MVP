@@ -1,6 +1,7 @@
 package com.css545.meetme.ui
 
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 
@@ -8,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.css545.meetme.ConsentActivity
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
 import com.google.android.gms.maps.model.CameraPosition
@@ -34,6 +37,13 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit) {
             CustomButton(
                 onClick = { onStopTrackButtonClicked() },
                 text = stringResource(id = R.string.screen_title_tracking_stop)
+            )
+            val context = LocalContext.current
+            CustomButton(
+                onClick = {
+                    context.startActivity(Intent(context, ConsentActivity::class.java), null)
+                },
+                text = "Go to Consent Activity"
             )
 
         }
