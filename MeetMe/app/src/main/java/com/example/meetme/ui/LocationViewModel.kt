@@ -48,6 +48,6 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
     override fun onLocationChanged(location: Location) {
         this.location = location
 
-        //updateLocation()
+        //pdateLocation()
     }
 }
