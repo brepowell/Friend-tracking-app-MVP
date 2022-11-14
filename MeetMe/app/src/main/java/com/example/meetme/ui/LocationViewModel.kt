@@ -9,10 +9,8 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.ui.tooling.data.EmptyGroup.location
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +20,10 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
     private val _latLong: MutableState<LatLng> = mutableStateOf(LatLng(47.6101, -122.2015))
     val latLng: MutableState<LatLng> get() = _latLong
 
-    var location : Location = Location(LocationManager.GPS_PROVIDER)
-    val locationStateFlow = MutableStateFlow(Location(LocationManager.GPS_PROVIDER))
-
+    private var location : Location = Location(LocationManager.GPS_PROVIDER)
 
     fun updateLocation(location: Location) {
-        this.location = location
+        _latLong.value = LatLng(location.latitude, location.longitude)
     }
 
     @SuppressLint("MissingPermission")
@@ -37,8 +33,6 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5,1f,this)
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
             onLocationChanged(location)
-
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -46,8 +40,6 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
 
 
     override fun onLocationChanged(location: Location) {
-        this.location = location
-
-        //pdateLocation()
+        _latLong.value = LatLng(location.latitude, location.longitude)
     }
 }

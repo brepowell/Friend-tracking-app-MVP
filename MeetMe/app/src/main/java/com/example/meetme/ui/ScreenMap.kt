@@ -2,16 +2,12 @@ package com.css545.meetme.ui
 
 
 import android.content.Intent
-import android.location.Location
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.css545.meetme.ConsentActivity
@@ -24,29 +20,23 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import androidx.lifecycle.viewmodel.compose.viewModel
-
-import android.location.LocationListener;
-import android.location.LocationManager;
-import androidx.compose.runtime.collectAsState
-import kotlinx.coroutines.flow.asStateFlow
 
 
 @Composable
 fun MapScreen(onStopTrackButtonClicked: () -> Unit,
-              viewModel: LocationViewModel = LocationViewModel(LocalContext.current)
+              locationViewModel: LocationViewModel = LocationViewModel(LocalContext.current)
 ) {
 
     Box{
 
-        /** The actual map shows here */
-        viewModel.getLocation()
-
-        var longLat = viewModel.location
-
-
-        GoogleMapView(LatLng(viewModel.location.latitude,
-            viewModel.location.longitude))
+        /**
+         * The locationViewModel uses a LocationManager to retrieve the current user location.
+         * the location is a MutableState variable, that way the map is recompose every time the
+         * location updates.
+         * */
+        locationViewModel.getLocation()
+        var location = locationViewModel.latLng
+        GoogleMapView(location.value)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,8 +53,6 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
                 },
                 text = "Go to Consent Activity"
             )
-            
-            CustomButton(onClick = { viewModel.updateLocation(viewModel.location) }, text = "Update Location")
 
         }
     }
@@ -74,7 +62,6 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
 fun GoogleMapView (
     location: LatLng
 ) {
-//    val singapore = LatLng(1.35, 103.87)
     val labelState = MarkerState(position = location)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(location, 10f)
