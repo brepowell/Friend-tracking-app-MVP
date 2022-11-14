@@ -53,7 +53,6 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
                 },
                 text = "Go to Consent Activity"
             )
-
         }
     }
 }
