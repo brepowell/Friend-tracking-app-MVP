@@ -26,16 +26,27 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+import android.location.LocationListener;
+import android.location.LocationManager;
+import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.flow.asStateFlow
+
 
 @Composable
 fun MapScreen(onStopTrackButtonClicked: () -> Unit,
-              viewModel: LocationViewModel = viewModel()
+              viewModel: LocationViewModel = LocationViewModel(LocalContext.current)
 ) {
 
     Box{
 
         /** The actual map shows here */
-        GoogleMapView(viewModel.latLng.value)
+        viewModel.getLocation()
+
+        var longLat = viewModel.location
+
+
+        GoogleMapView(LatLng(viewModel.location.latitude,
+            viewModel.location.longitude))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,10 +72,10 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
 
 @Composable
 fun GoogleMapView (
-    location: LatLng = LatLng(1.35, 103.87)
+    location: LatLng
 ) {
 //    val singapore = LatLng(1.35, 103.87)
-    val singState = MarkerState(position = location)
+    val labelState = MarkerState(position = location)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(location, 10f)
     }
@@ -73,7 +84,7 @@ fun GoogleMapView (
         cameraPositionState = cameraPositionState
     ) {
         Marker(
-            state = singState,
+            state = labelState,
             title = "Singapore",
             snippet = "Marker in Singapore"
         )
