@@ -87,9 +87,6 @@
         </activity>
 
         <activity android:name=".ConsentActivity"/>
-
-
-
     </application>
 
 </manifest>
