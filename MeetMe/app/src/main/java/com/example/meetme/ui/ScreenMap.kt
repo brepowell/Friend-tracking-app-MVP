@@ -64,7 +64,7 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
                 text = "Go to Consent Activity"
             )
             
-            CustomButton(onClick = { viewModel.updateLocation(LatLng(47.6101, -122.2015)) }, text = "Update Location")
+            CustomButton(onClick = { viewModel.updateLocation(viewModel.location) }, text = "Update Location")
 
         }
     }
