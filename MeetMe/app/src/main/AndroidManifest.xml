@@ -6,6 +6,7 @@
     <!--Access the rough location in case permission is denied for precise location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!--Access the precise location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!--Access location continuously -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
@@ -32,6 +33,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
 
         <activity
             android:name=".MainActivity"
@@ -85,6 +87,8 @@
         </activity>
 
         <activity android:name=".ConsentActivity"/>
+
+
 
     </application>
 
