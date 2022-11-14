@@ -26,8 +26,8 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
     val locationStateFlow = MutableStateFlow(Location(LocationManager.GPS_PROVIDER))
 
 
-    fun updateLocation(newLatLng: LatLng) {
-        _latLong.value = newLatLng
+    fun updateLocation(location: Location) {
+        this.location = location
     }
 
     @SuppressLint("MissingPermission")
