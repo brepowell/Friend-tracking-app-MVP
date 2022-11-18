@@ -18,7 +18,8 @@ import com.css545.meetme.ui.components.CustomButton
 fun ConsentScreen(
     settingsState: SettingsState,
     onYesClicked: () -> Unit,
-    onNoClicked: () -> Unit
+    onNoClicked: () -> Unit,
+    sessionID: Int = 0,
 ) {
     Column(
         modifier = Modifier.padding(32.dp),
@@ -29,6 +30,8 @@ fun ConsentScreen(
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Start)
         )
+
+        Text(text= "session ID: $sessionID")
 
         //Spacers add space below different fields
         Spacer(modifier = Modifier.height(8.dp))
@@ -54,5 +57,5 @@ fun ConsentScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewConsentScreen() {
-    ConsentScreen( SettingsState(),{}, {})
+    ConsentScreen(SettingsState(),{}, {})
 }
