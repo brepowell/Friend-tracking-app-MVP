@@ -16,6 +16,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
+import androidx.navigation.compose.rememberNavController
 import com.css545.meetme.ui.components.CustomButton
 import com.css545.meetme.ui.theme.MeetMeTheme
 
@@ -41,6 +43,11 @@ class MainActivity : ComponentActivity() {
         {
             ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        // Need to get a havHost in here
     }
 }
 
