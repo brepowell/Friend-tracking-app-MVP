@@ -1,29 +1,26 @@
 package com.css545.meetme
 
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.net.Uri
 import android.os.Build
-import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.Modifier
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,10 +28,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import com.css545.meetme.ui.*
 import com.css545.meetme.data.SettingsDataStore
 import com.css545.meetme.data.SettingsState
-import com.example.meetme.NavigationRoutes
+import com.css545.meetme.ui.*
 import kotlinx.coroutines.launch
 
 /** DEFINING ROUTES (A route is "a string that corresponds to a destination"):
@@ -162,18 +158,14 @@ fun MeetMeApp(
                     onStartTrackingButtonClicked = {
                         scope.launch {
                             /** SAVE THE USER INPUT FOR THE TRACKING DURATION */
-                            /** SAVE THE USER INPUT FOR THE TRACKING DURATION */
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
 //                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
                         scope.launch {
                             /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
-                            /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
                             settingsDataStore.savePhoneNumberToPreferencesStore(it)
                         }
-
-                        /** NAVIGATE TO WAITING SCREEN */
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
@@ -189,7 +181,7 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.Waiting.name){
                 WaitingForConsentScreen(
                     /** OPTION TO CANCEL THE INVITATION THAT WAS SENT */
-                    /** OPTION TO CANCEL THE INVITATION THAT WAS SENT */
+
                     onCancelButtonClicked = {
                         navController.navigate(MeetMeScreen.TrackingStart.name)
                     },
@@ -212,6 +204,9 @@ fun MeetMeApp(
              * Here, the user sees that someone has invited them to a tracking session
              * They can either consent to being tracked and then go to the maps screen
              * or they can decline and return to the start tracking screen.
+             *
+             * The deepLinks parameter will allow another app (an SMS app) to navigate here
+             * from a deep link.
              * */
             composable(route = MeetMeScreen.Consent.name,
                         arguments = listOf(navArgument("sessionID") { type = NavType.IntType}),
@@ -236,7 +231,7 @@ fun MeetMeApp(
                         /** NAVIGATE TO MAP SCREEN TO START TRACKING */
                         navController.navigate(MeetMeScreen.Map.name)
                     },
-                    /** NAVIGATE BACK TO START TRACKING SCREEN */
+
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
                     onNoClicked = {
 
@@ -252,8 +247,14 @@ fun MeetMeApp(
              * Here, the user sees a map with a pin for their location and a pin for
              * their friend's location.
              * They can choose to stop the session at any time.
+             *
+             * The deepLinks parameter will allow another app (an SMS app) to navigate here
+             * from a deep link.
              * */
-            composable(route = MeetMeScreen.Map.name) {
+            composable(route = MeetMeScreen.Map.name,
+                arguments = listOf(navArgument("sessionID") { type = NavType.IntType}),
+                deepLinks = listOf(navDeepLink { uriPattern = "$uri/Map/{sessionID}" })
+            ) {
                 MapScreen(
                     onStopTrackButtonClicked = {
                         /** NAVIGATE BACK TO STOP TRACKING SCREEN */
@@ -266,6 +267,9 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.TrackingEnd.name){
                 StopTrackingScreen(
                     onYesClicked = {
+
+                        //TODO: END THE SESSION SOMEHOW - IN THE DATABASE
+
                         scope.launch {
                             /** THE USER STOPPED THE TRACKING SESSION -- THE SESSION IS OVER */
                             settingsDataStore.saveTrackingToPreferencesStore(false)
@@ -304,8 +308,6 @@ fun MeetMeApp(
                     onUpdatePasswordClicked = { /* TODO: Implement */},
 
                     /** NAVIGATE TO HELP SCREEN */
-
-                    /** NAVIGATE TO HELP SCREEN */
                     onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
                 )
             }
@@ -315,7 +317,7 @@ fun MeetMeApp(
              * */
             composable(route = MeetMeScreen.Help.name) {
                 HelpScreen( onSettingsButtonClicked = {
-                    /** NAVIGATE TO SETTINGS SCREEN */
+
                     /** NAVIGATE TO SETTINGS SCREEN */
                     navController.navigate(MeetMeScreen.Settings.name)
                 })
