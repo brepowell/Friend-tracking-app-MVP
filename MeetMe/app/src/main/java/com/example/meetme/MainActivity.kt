@@ -35,7 +35,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MeetMeApp(intent)
+                    //MeetMeApp(intent)
+                    MeetMeApp(intent, context)
                 }
             }
         }
