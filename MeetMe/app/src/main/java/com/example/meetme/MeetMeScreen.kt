@@ -1,5 +1,7 @@
 package com.css545.meetme
 
+
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,6 +35,7 @@ import com.css545.meetme.data.SettingsDataStore
 import com.css545.meetme.data.SettingsState
 import com.css545.meetme.ui.*
 import kotlinx.coroutines.launch
+
 
 /** DEFINING ROUTES (A route is "a string that corresponds to a destination"):
     TrackingStart:  The screen where the user chooses the number of hours and sends an invitation
@@ -103,6 +107,7 @@ fun MeetMeAppbar (
 @Composable
 fun MeetMeApp(
     intent: Intent,
+    context: Context,
     modifier: Modifier = Modifier
 //    viewModel: MeetMeViewModel = viewModel()
 ) {
@@ -166,6 +171,40 @@ fun MeetMeApp(
                             /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
                             settingsDataStore.savePhoneNumberToPreferencesStore(it)
                         }
+
+                        /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
+                        scope.launch { //If I put this not inside the co-routine it takes a few seconds
+                            val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
+                            val linkToMeetMe = "$uri/Consent/$session" //Need to figure out a unique link?
+                            val hours = 6
+
+                            val message =
+                                "Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
+                            //Test phone 1 is 6505551212
+                            //Test phone 2 is 16505556789
+
+                            val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
+
+                            //Even without the "chooser" element, some putExtras are not working:
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND  //Limit to the SMS apps
+                                //putExtra("sms_body", message)
+                                //putExtra(Intent.EXTRA_STREAM, linkToMeetMe)
+                                putExtra(Intent.EXTRA_TEXT, message) //Works
+                                //putExtra("sms_body", message) //Not working either
+                                //putExtra(Intent.EXTRA_TITLE, message) //Not working?
+                                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION //Works
+                                //flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                type = "text/plain"
+                            }
+
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            startActivity(context, shareIntent, null)
+                            // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
+                            //  THAT CAN HANDLE THE REQUEST ???
+                        }
+
+                        // TODO: ADD A DELAY?
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
