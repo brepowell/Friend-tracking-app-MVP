@@ -267,8 +267,28 @@ fun MeetMeApp(
                             settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
+                        /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE MAPS PAGE FOR BOTH USERS **/
+                        scope.launch { //If I put this not inside the co-routine it takes a few seconds
+                            val linkToMeetMe = "$uri/Map/$sessionID"
+
+                            val message =
+                                "Yes, I will join you on MeetMe. Let's go to the map! $linkToMeetMe"
+
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND  //Limit to the SMS apps
+                                putExtra(Intent.EXTRA_TEXT, message) //Works
+                                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION //Works
+                                type = "text/plain"
+                            }
+
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            startActivity(context, shareIntent, null)
+                            // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
+                            //  THAT CAN HANDLE THE REQUEST ???
+                        }
+
                         /** NAVIGATE TO MAP SCREEN TO START TRACKING */
-                        navController.navigate(MeetMeScreen.Map.name)
+                        navController.navigate("Map/{sessionID}")
                     },
 
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
