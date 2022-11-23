@@ -1,6 +1,9 @@
 package edu.uwb.meetme.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
+import java.util.Set;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,6 +39,31 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Location location;
+
+    public Set<Session> getOwnSessions() {
+        return ownSessions;
+    }
+
+    public void setOwnSessions(Set<Session> ownSessions) {
+        this.ownSessions = ownSessions;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "owner")
+    private Set<Session> ownSessions;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private Session session;
 
     public Long getId() {
         return id;
