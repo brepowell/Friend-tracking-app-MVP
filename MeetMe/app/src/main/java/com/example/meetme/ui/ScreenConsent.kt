@@ -26,7 +26,7 @@ fun ConsentScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         //Prompt at the top
         Text(
-            text = stringResource(id = R.string.tracking_handshake_notification, "Breanna"),
+            text = stringResource(id = R.string.tracking_handshake_notification, 1, "Breanna"),
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Start)
         )
