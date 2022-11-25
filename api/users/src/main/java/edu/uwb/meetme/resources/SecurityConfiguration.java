@@ -1,19 +1,21 @@
 package edu.uwb.meetme.resources;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Configuration of Spring Boot Security plugin
  */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    MyUserDetailsService userDetailsService;
 
     /**
      * Set the configuration using the Authentication manager builder
@@ -23,7 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // Set configuration on the auth object
-        auth.userDetailsService(userDetailsService());
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     /**
@@ -35,39 +39,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/**").permitAll();
+                .antMatchers("/meetme/api/v1/**").authenticated()
+                .antMatchers("/login").permitAll()
+                .and().formLogin().defaultSuccessUrl("/meetme/api/v1/successlogin");
 
         http.csrf().disable();
-    }
-
-    /**
-     * Returns the UserDetailsService to be user for authentication
-     * @return  The UserDetailsService to be user for authentication
-     */
-    @Bean
-    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
-        return new UserDetailsService();
     }
 
     /**
      * Returns the password encoder for the application
      * @return  The password encoder por the application
      */
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    @Autowired
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * Returns the authentication provider for the application
-     * @return  The authentication provider for the application
-     */
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
     }
 }

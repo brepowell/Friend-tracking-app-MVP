@@ -3,14 +3,18 @@ package edu.uwb.meetme.resources;
 import edu.uwb.meetme.models.User;
 import edu.uwb.meetme.models.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 /**
  * Loads the Gym Member details as UserDetails for authentication purposes
  */
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+@Service
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -22,10 +26,11 @@ public class UserDetailsService implements org.springframework.security.core.use
      * @throws UsernameNotFoundException
      */
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("In Service...");
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        System.out.println("In Service...");
         Optional<User> user = userRepository.findByEmail(email);
         user.orElseThrow(() -> new UsernameNotFoundException("user not found: " + email));
-        return user.map(UserDetails::new).get();
+        MyUserDetails userDetails = new MyUserDetails(user.get().getEmail(), user.get().getPassword());
+        return userDetails;
     }
 }

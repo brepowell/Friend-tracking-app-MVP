@@ -59,7 +59,7 @@ public class SessionController {
         if (session.getStartTime() != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Session has already been started.");
         }
-        
+
         session.setStartTime(currentTime);
         return sessionService.updateSession(session);
     }
