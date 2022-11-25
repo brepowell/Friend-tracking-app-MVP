@@ -173,36 +173,30 @@ fun MeetMeApp(
                         }
 
                         /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
-                        scope.launch { //If I put this not inside the co-routine it takes a few seconds
-                            val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
-                            val linkToMeetMe = "$uri/Consent/$session" //Need to figure out a unique link?
-                            val hours = 6
+                        //If I put this not inside the co-routine it takes a few seconds
+                        val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
+                        val linkToMeetMe = "$uri/Consent/$session" //Need to figure out a unique link?
+                        val hours = settingsState.value.trackLength.toString()
+                        val res = context.resources
+                        val message =
+                            res.getString(R.string.tracking_handshake_notification, hours, linkToMeetMe)
+                        //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
+                        //Test phone 1 is 6505551212
+                        //Test phone 2 is 16505556789
 
-                            val message =
-                                "Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
-                            //Test phone 1 is 6505551212
-                            //Test phone 2 is 16505556789
+                        val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
 
-                            val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
-
-                            //Even without the "chooser" element, some putExtras are not working:
-                            val sendIntent: Intent = Intent().apply {
-                                action = Intent.ACTION_SEND  //Limit to the SMS apps
-                                //putExtra("sms_body", message)
-                                //putExtra(Intent.EXTRA_STREAM, linkToMeetMe)
-                                putExtra(Intent.EXTRA_TEXT, message) //Works
-                                //putExtra("sms_body", message) //Not working either
-                                //putExtra(Intent.EXTRA_TITLE, message) //Not working?
-                                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION //Works
-                                //flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                type = "text/plain"
-                            }
-
-                            val shareIntent = Intent.createChooser(sendIntent, null)
-                            startActivity(context, shareIntent, null)
-                            // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
-                            //  THAT CAN HANDLE THE REQUEST ???
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND //Opens up another app
+                            putExtra(Intent.EXTRA_TEXT, message) //Attached a message
+                            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            type = "text/plain"
                         }
+
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        startActivity(context, shareIntent, null)
+                        // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
+                        //  THAT CAN HANDLE THE REQUEST ???
 
                         // TODO: ADD A DELAY?
 
@@ -234,7 +228,7 @@ fun MeetMeApp(
                         navController.navigate(MeetMeScreen.Consent.name)
                     }
                     // TODO: THE WAITING SCREEN SHOULD AUTOMATICALLY NAVIGATE TO THE MAP
-                    //  SCREEN IF CONSENT WAS GIVEN
+                    //  SCREEN IF CONSENT WAS GIVEN -- Should the user have to click the SMS link?
                 )
             }
 
