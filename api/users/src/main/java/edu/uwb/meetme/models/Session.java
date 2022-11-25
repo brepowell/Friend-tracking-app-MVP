@@ -1,21 +1,25 @@
 package edu.uwb.meetme.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "session")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
@@ -23,12 +27,15 @@ public class Session {
     @Basic(optional = true)
     private LocalDateTime startTime;
 
+    @Basic(optional = true)
+    private LocalDateTime endTime;
+
     @Basic(optional = false)
     private int duration;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "session")
-    private Set<User> users;
+//    @JsonManagedReference
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -68,5 +75,13 @@ public class Session {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 }

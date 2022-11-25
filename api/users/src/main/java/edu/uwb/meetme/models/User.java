@@ -1,15 +1,18 @@
 package edu.uwb.meetme.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.NaturalId;
+
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,6 +23,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -40,30 +44,18 @@ public class User {
     @PrimaryKeyJoinColumn
     private Location location;
 
-    public Set<Session> getOwnSessions() {
-        return ownSessions;
-    }
-
-    public void setOwnSessions(Set<Session> ownSessions) {
-        this.ownSessions = ownSessions;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    @JsonManagedReference
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonIgnore
     @OneToMany(mappedBy = "owner")
-    private Set<Session> ownSessions;
+    private Set<Session> ownSessions = new HashSet<>();
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "session_id")
+    @JsonIgnore
+    @ManyToOne(targetEntity = Session.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", insertable = false, updatable = false)
     private Session session;
+
+    @Column(name = "session_id")
+    private Long trackingSessionId;
 
     public Long getId() {
         return id;
@@ -113,21 +105,6 @@ public class User {
         this.location = location;
     }
 
-//    public LocalDate getDateOfBirth() {
-//        return dateOfBirth;
-//    }
-//
-//    public void setDateOfBirth(LocalDate dateOfBirth) {
-//        this.dateOfBirth = dateOfBirth;
-//    }
-//
-//    public Gender getGender() {
-//        return gender;
-//    }
-//
-//    public void setGender(Gender gender) {
-//        this.gender = gender;
-//    }
 
     public LocalDateTime getJoinDate() {
         return joinDate;
@@ -135,5 +112,29 @@ public class User {
 
     public void setJoinDate(LocalDateTime joinDate) {
         this.joinDate = joinDate;
+    }
+
+    public Set<Session> getOwnSessions() {
+        return ownSessions;
+    }
+
+    public void setOwnSessions(Set<Session> ownSessions) {
+        this.ownSessions = ownSessions;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    public Long getTrackingSessionId() {
+        return trackingSessionId;
+    }
+
+    public void setTrackingSessionId(Long sessionId) {
+        this.trackingSessionId = sessionId;
     }
 }

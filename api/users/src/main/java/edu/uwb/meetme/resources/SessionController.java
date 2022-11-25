@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/meetme/api/v1")
 public class SessionController {
@@ -32,6 +34,33 @@ public class SessionController {
         Session session = new Session();
         session.setDuration(sessionPayload.duration);
         session.setOwner(owner);
-        return sessionService.addSession(session);
+        Session savedSession = sessionService.addSession(session);
+        owner.setTrackingSessionId(savedSession.getId());
+        return session;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/session/{id}/adduser/{userId}")
+    public Session addUser(@PathVariable Long id, @PathVariable Long userId) {
+        User user = userService.getUser(userId);
+        user.setTrackingSessionId(id);
+        userService.updateUser(user);
+        Session session = sessionService.getSession(id);
+        return session;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/session/{id}/start")
+    public Session startSession(@PathVariable Long id) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        Session session = sessionService.getReference(id);
+        session.setStartTime(currentTime);
+        return sessionService.updateSession(session);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/session/{id}/end")
+    public Session endSession(@PathVariable Long id) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        Session session = sessionService.getReference(id);
+        session.setEndTime(currentTime);
+        return sessionService.updateSession(session);
     }
 }

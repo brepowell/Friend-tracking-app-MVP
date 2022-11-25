@@ -1,9 +1,6 @@
 package edu.uwb.meetme.resources;
 
-import edu.uwb.meetme.models.Location;
-import edu.uwb.meetme.models.LocationRepository;
-import edu.uwb.meetme.models.User;
-import edu.uwb.meetme.models.ResponseMessage;
+import edu.uwb.meetme.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Rest Controller for the User Management API
@@ -133,4 +131,10 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed to update user location.");
         }
     }
+
+    @RequestMapping(value = "/users/{id}/ownSessions")
+    public Set<Session> getOwnSessions(@PathVariable Long id) {
+        return userService.getOwnSessions(id);
+    }
+
 }

@@ -1,5 +1,6 @@
 package edu.uwb.meetme.resources;
 
+import edu.uwb.meetme.models.Session;
 import edu.uwb.meetme.models.User;
 import edu.uwb.meetme.models.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service for interfacing with the Member table in the database
@@ -75,5 +78,20 @@ public class UserService {
      */
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Set<Session> getOwnSessions(Long userId) {
+        User user = userRepository.getById(userId);
+        Set<Session> sessions = user.getOwnSessions();
+
+        // Remove sessions that have ended
+        Iterator<Session> itr = sessions.iterator();
+        while (itr.hasNext()) {
+            Session current = itr.next();
+            if (current.getEndTime() != null) {
+                sessions.remove(current);
+            }
+        }
+        return sessions;
     }
 }

@@ -18,4 +18,12 @@ public class SessionService {
     public Session addSession(Session session) {
         return sessionRepository.save(session);
     }
+
+    public Session getReference(Long id) {
+        return sessionRepository.getById(id);
+    }
+
+    public Session updateSession(Session session) {
+        return sessionRepository.save(session);
+    }
 }
