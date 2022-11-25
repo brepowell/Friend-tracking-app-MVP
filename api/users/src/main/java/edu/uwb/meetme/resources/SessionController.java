@@ -6,8 +6,10 @@ import edu.uwb.meetme.models.User;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -52,6 +54,12 @@ public class SessionController {
     public Session startSession(@PathVariable Long id) {
         LocalDateTime currentTime = LocalDateTime.now();
         Session session = sessionService.getReference(id);
+
+        // Check that session hasn't started yet
+        if (session.getStartTime() != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Session has already been started.");
+        }
+        
         session.setStartTime(currentTime);
         return sessionService.updateSession(session);
     }
@@ -60,6 +68,17 @@ public class SessionController {
     public Session endSession(@PathVariable Long id) {
         LocalDateTime currentTime = LocalDateTime.now();
         Session session = sessionService.getReference(id);
+
+        // Check that session has been started
+        if (session.getStartTime() == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Session has not started yet.");
+        }
+
+        // Check that end time is greater than start time
+//        if (session.getStartTime().compareTo(currentTime) > 0) {
+//            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Start time is after end time");
+//        }
+
         session.setEndTime(currentTime);
         return sessionService.updateSession(session);
     }
