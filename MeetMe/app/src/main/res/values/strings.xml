@@ -37,7 +37,7 @@
 
     <!--Confirmation limbo text: -->
     <string name="tracking_handshake_notification">Please join me in a
-        tracking session for %1$d hours on MeetMe %2$s</string>
+        tracking session for %1$s hours on MeetMe %2$s</string>
     <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
     <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
 
