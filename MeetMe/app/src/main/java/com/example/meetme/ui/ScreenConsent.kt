@@ -1,7 +1,6 @@
 package com.css545.meetme.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
@@ -26,8 +25,8 @@ fun ConsentScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         //Prompt at the top
         Text(
-            text = stringResource(id = R.string.tracking_handshake_notification,
-                settingsState.trackLength.toString(), "Breanna"),
+            text = stringResource(id = R.string.tracking_handshake_consent_page_prompt,
+                settingsState.trackLength.toString()),
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Start)
         )
@@ -37,19 +36,27 @@ fun ConsentScreen(
         //Spacers add space below different fields
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Friend(s)
-        //tracking_start_friends
+        //Ask for consent
         Text(
             text = stringResource(
-                id = R.string.tracking_handshake_consent,
+                id = R.string.tracking_handshake_consent_ask,
                 settingsState.trackLength.toString()
             ),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
         )
 
-        CustomButton(onClick = onYesClicked, text = "Yes")
-        CustomButton(onClick = onNoClicked, text = "No")
+        //YES BUTTON
+        CustomButton(
+            onClick = onYesClicked,
+            text = stringResource(
+                id = R.string.button_yes))
+
+        //NO BUTTON
+        CustomButton(
+            onClick = onNoClicked,
+            text = stringResource(
+                id = R.string.button_no))
     }
 }
 

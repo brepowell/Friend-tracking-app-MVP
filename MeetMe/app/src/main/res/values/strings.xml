@@ -36,10 +36,13 @@
         If you would like to cancel the invitation, press cancel.</string>
 
     <!--Confirmation limbo text: -->
-    <string name="tracking_handshake_notification">Please join me in a
+    <string name="tracking_handshake_initial_message">Please join me in a
         tracking session for %1$s hours on MeetMe %2$s</string>
-    <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
-    <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
+    <string name="tracking_handshake_consent_page_prompt">Please join me in a
+        tracking session for %s hours on MeetMe.</string>
+    <string name="tracking_handshake_consent_ask">Do you consent to being tracked for %s hours?</string>
+    <string name="tracking_handshake_consent_yes">"Yes, I will join you on MeetMe. Let's go to the map! %s"</string>
+    <string name="tracking_handshake_consent_no">"No, thank you. I cannot join you right now. %s"</string>
 
     <!--Stop tracking text: -->
     <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>

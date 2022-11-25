@@ -173,32 +173,17 @@ fun MeetMeApp(
                         }
 
                         /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
-                        //If I put this not inside the co-routine it takes a few seconds
                         val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
                         val linkToMeetMe = "$uri/Consent/$session" //Need to figure out a unique link?
                         val hours = settingsState.value.trackLength.toString()
                         val res = context.resources
                         val message =
-                            res.getString(R.string.tracking_handshake_notification, hours, linkToMeetMe)
+                            res.getString(R.string.tracking_handshake_initial_message, hours, linkToMeetMe)
                         //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
                         //Test phone 1 is 6505551212
                         //Test phone 2 is 16505556789
-
-                        val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
-
-                        val sendIntent: Intent = Intent().apply {
-                            action = Intent.ACTION_SEND //Opens up another app
-                            putExtra(Intent.EXTRA_TEXT, message) //Attached a message
-                            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            type = "text/plain"
-                        }
-
-                        val shareIntent = Intent.createChooser(sendIntent, null)
-                        startActivity(context, shareIntent, null)
-                        // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
-                        //  THAT CAN HANDLE THE REQUEST ???
-
-                        // TODO: ADD A DELAY?
+                        //val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
+                        sendIntent(context, message)
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
@@ -264,21 +249,11 @@ fun MeetMeApp(
                         /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE MAPS PAGE FOR BOTH USERS **/
                         scope.launch { //If I put this not inside the co-routine it takes a few seconds
                             val linkToMeetMe = "$uri/Map/$sessionID"
-
+                            val res = context.resources
                             val message =
-                                "Yes, I will join you on MeetMe. Let's go to the map! $linkToMeetMe"
-
-                            val sendIntent: Intent = Intent().apply {
-                                action = Intent.ACTION_SEND  //Limit to the SMS apps
-                                putExtra(Intent.EXTRA_TEXT, message) //Works
-                                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION //Works
-                                type = "text/plain"
-                            }
-
-                            val shareIntent = Intent.createChooser(sendIntent, null)
-                            startActivity(context, shareIntent, null)
-                            // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
-                            //  THAT CAN HANDLE THE REQUEST ???
+                                res.getString(R.string.tracking_handshake_consent_yes, linkToMeetMe)
+                                //"Yes, I will join you on MeetMe. Let's go to the map! $linkToMeetMe"
+                            sendIntent(context, message)
                         }
 
                         /** NAVIGATE TO MAP SCREEN TO START TRACKING */
@@ -288,9 +263,13 @@ fun MeetMeApp(
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
                     onNoClicked = {
 
-                        /* TODO: WE MAY NEED TO IMPLEMENT A REPLY MESSAGE HERE
-                            THAT GOES BACK TO THE PERSON WHO INVITED THEM
-                            SAYING THAT CONSENT WAS DECLINED */
+                        /** SEND A REPLY SMS MESSAGE TO USER 1 SAYING CONSENT IS DENIED **/
+                        val linkToMeetMe = "$uri/TrackingStart"
+                        val res = context.resources
+                        val message =
+                            res.getString(R.string.tracking_handshake_consent_no, linkToMeetMe)
+                        //"No, thank you. I cannot join you right now. %s"
+                        sendIntent(context, message)
                         navController.navigate(MeetMeScreen.TrackingStart.name)
                     }
                 )
@@ -377,4 +356,19 @@ fun MeetMeApp(
             }
         }
     }
+}
+
+fun sendIntent(context: Context, message: String){
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND  //Limit to the SMS apps
+        putExtra(Intent.EXTRA_TEXT, message) //Works
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION //Works
+        type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    startActivity(context, shareIntent, null)
+
+    // TODO: ADD RESOLVEACTIVITY() TO MAKE SURE THERE IS AN APP
+    //  THAT CAN HANDLE THE REQUEST ???
 }
