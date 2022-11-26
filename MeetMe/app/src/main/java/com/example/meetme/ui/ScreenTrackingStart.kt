@@ -31,6 +31,7 @@ import java.text.NumberFormat
 fun StartTrackingScreen(
     settingsState: SettingsState,
     onStartTrackingButtonClicked: (String) -> Unit,
+    onMapButtonClicked: () -> Unit // TODO: REMOVE LATER
 ) {
     var amountInput by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
     var phoneNumber by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
@@ -147,6 +148,9 @@ fun StartTrackingScreen(
         /**-----------------SEND INVITATION BUTTON --------------------------*/
 
         InviteToStartTrackingButton(onClick = { onStartTrackingButtonClicked(amountInput) })
+
+        // TODO: REMOVE LATER
+        CustomButton(onClick = { onMapButtonClicked() }, text = "GO TO MAP -- FOR TESTING")
     }
 }
 
@@ -218,5 +222,7 @@ private fun ExpirationTime(): String{
 fun PreviewStartTracking() {
     StartTrackingScreen(
         settingsState = SettingsState(),
-        onStartTrackingButtonClicked = {})
+        onStartTrackingButtonClicked = {},
+        onMapButtonClicked = {} // TODO: REMOVE LATER
+        )
 }

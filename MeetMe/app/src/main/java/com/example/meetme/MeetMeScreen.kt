@@ -1,6 +1,7 @@
 package com.css545.meetme
 
 
+import android.Manifest.permission_group.SMS
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -187,6 +188,11 @@ fun MeetMeApp(
 
                         /** NAVIGATE TO WAITING SCREEN */
                         navController.navigate(MeetMeScreen.Waiting.name)
+                    },
+
+                    // TODO: REMOVE WHEN FINISHED TESTING 2 LOCATIONS
+                    onMapButtonClicked = {
+                        navController.navigate("$uri/Map/1234")
                     }
                 )
             }
@@ -204,16 +210,8 @@ fun MeetMeApp(
                         navController.navigate(MeetMeScreen.TrackingStart.name)
                     },
 
-                    // TODO: WE WILL WANT TO POP THIS SCREEN OFF OF THE BACK STACK
-                    //  BECAUSE THE USER SHOULD NOT RETURN TO IT.
-
-                    // TODO: THIS BUTTON WILL NOT BE NECESSARY WITH THE FINAL PRODUCT
-                    //  REMOVE WHEN DONE
-                    onContinueButtonClicked = {
-                        navController.navigate(MeetMeScreen.Consent.name)
-                    }
-                    // TODO: THE WAITING SCREEN SHOULD AUTOMATICALLY NAVIGATE TO THE MAP
-                    //  SCREEN IF CONSENT WAS GIVEN -- Should the user have to click the SMS link?
+                    // TODO: DO WE NEED TO POP THIS SCREEN OFF OF THE BACK STACK
+                    //  BECAUSE THE USER SHOULD NOT RETURN TO IT?
                 )
             }
 
@@ -256,7 +254,7 @@ fun MeetMeApp(
                             sendIntent(context, message)
                         }
 
-                        /** NAVIGATE TO MAP SCREEN TO START TRACKING */
+                        /** NAVIGATE TO MAP SCREEN */
                         navController.navigate("Map/{sessionID}")
                     },
 

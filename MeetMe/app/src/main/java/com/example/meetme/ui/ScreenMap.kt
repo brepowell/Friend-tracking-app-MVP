@@ -42,16 +42,11 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
+
+            /** STOP TRACKING BUTTON */
             CustomButton(
                 onClick = { onStopTrackButtonClicked() },
                 text = stringResource(id = R.string.screen_title_tracking_stop)
-            )
-            val context = LocalContext.current
-            CustomButton(
-                onClick = {
-                    context.startActivity(Intent(context, ConsentActivity::class.java), null)
-                },
-                text = "Go to Consent Activity"
             )
         }
     }

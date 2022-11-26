@@ -22,9 +22,7 @@ import com.css545.meetme.ui.theme.colorTiffanyBlue
 
 @Composable
 fun WaitingForConsentScreen(
-    onCancelButtonClicked: () -> Unit,
-    // TODO: THE CONTINUE BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
-    onContinueButtonClicked: () -> Unit
+    onCancelButtonClicked: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -70,14 +68,6 @@ fun WaitingForConsentScreen(
                 onClick = { onCancelButtonClicked() },
                 text = stringResource(id = R.string.button_cancel)
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // TODO: THIS BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
-            CustomButton(
-                onClick = { onContinueButtonClicked() },
-                text = stringResource(id = R.string.button_continue)
-            )
         }
     }
 }
@@ -87,6 +77,5 @@ fun WaitingForConsentScreen(
 @Composable
 fun PreviewWaitingForConsentScreen()
 {
-    // TODO: THE CONTINUE BUTTON IS TEMPORARY. IT NEEDS TO BE REMOVED FROM THE REAL DEAL
-    WaitingForConsentScreen(onCancelButtonClicked = {}, onContinueButtonClicked = {})
+    WaitingForConsentScreen(onCancelButtonClicked = {})
 }
