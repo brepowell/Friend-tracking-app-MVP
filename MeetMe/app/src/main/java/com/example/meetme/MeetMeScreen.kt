@@ -4,6 +4,7 @@ package com.css545.meetme
 import android.Manifest.permission_group.SMS
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
@@ -192,7 +193,10 @@ fun MeetMeApp(
 
                     // TODO: REMOVE WHEN FINISHED TESTING 2 LOCATIONS
                     onMapButtonClicked = {
-                        navController.navigate("$uri/Map/1234")
+                        val goTo = Uri.parse("$uri/Map/1234")
+                        val intent = Intent(Intent.ACTION_VIEW, goTo)
+                        context.startActivity(intent, null)
+
                     }
                 )
             }
