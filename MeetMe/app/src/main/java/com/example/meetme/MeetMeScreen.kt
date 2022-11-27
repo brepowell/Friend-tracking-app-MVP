@@ -165,13 +165,13 @@ fun MeetMeApp(
                         scope.launch {
                             /** SAVE THE USER INPUT FOR THE TRACKING DURATION */
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
-//                            settingsDataStore.saveTrackingToPreferencesStore(true)
                         }
 
-                        scope.launch {
-                            /** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER */
+/*                        scope.launch {
+                            *//** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER *//*
                             settingsDataStore.savePhoneNumberToPreferencesStore(it)
                         }
+*/
 
                         /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
                         val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
@@ -183,6 +183,8 @@ fun MeetMeApp(
                         //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
                         //Test phone 1 is 6505551212
                         //Test phone 2 is 16505556789
+                        // TODO: REMOVE THE PHONE NUMBER FROM THIS PART AND HAVE A MESSAGE
+                        //  ABOUT WHAT SHOULD HAPPEN
                         //val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
                         sendIntent(context, message)
 
@@ -193,8 +195,8 @@ fun MeetMeApp(
                     // TODO: REMOVE WHEN FINISHED TESTING 2 LOCATIONS
                     onMapButtonClicked = {
                         val goTo = Uri.parse("$uri/Map/1234")
-                        val intent = Intent(Intent.ACTION_VIEW, goTo)
-                        context.startActivity(intent, null)
+                        val intentToMap = Intent(Intent.ACTION_VIEW, goTo)
+                        context.startActivity(intentToMap, null)
                     }
                 )
             }
