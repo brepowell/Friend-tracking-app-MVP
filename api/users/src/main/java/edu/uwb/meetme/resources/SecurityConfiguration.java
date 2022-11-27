@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/meetme/api/v1/**").authenticated()
+                .antMatchers("/meetme/api/v1/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .and().formLogin().defaultSuccessUrl("/meetme/api/v1/successlogin");
 
