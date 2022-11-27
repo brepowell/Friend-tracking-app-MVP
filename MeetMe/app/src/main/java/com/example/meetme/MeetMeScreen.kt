@@ -324,7 +324,10 @@ fun MeetMeApp(
                     },
                     onNoClicked = {
                         /** RETURN BACK TO THE MAP SCREEN */
-                        navController.navigate(MeetMeScreen.Map.name)
+                        //navController.navigate(MeetMeScreen.Map.name)
+                        val goTo = Uri.parse("$uri/Map/1234")
+                        val intentToMap = Intent(Intent.ACTION_VIEW, goTo)
+                        context.startActivity(intentToMap, null)
                     }
 
                 )
