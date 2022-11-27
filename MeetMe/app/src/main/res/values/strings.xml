@@ -30,6 +30,8 @@
     <string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
     <string name="tracking_start_bill_amount">Bill amount: %s </string>
     <string name="tracking_start_send_invite">Send Invitation</string>
+    <string name="tracking_start_warning_about_opening_SMS">When you click the button below, please
+    choose your favorite text messaging app and text the invitation link to your friend.</string>
 
     <!--Waiting for consent text: -->
     <string name="waiting_for_consent">An invitation has been sent to %s. Please wait.

@@ -34,7 +34,7 @@ fun StartTrackingScreen(
     onMapButtonClicked: () -> Unit // TODO: REMOVE LATER
 ) {
     var amountInput by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
-    var phoneNumber by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
+    //var phoneNumber by rememberSaveable { mutableStateOf(settingsState.trackLength.toString()) }
 
     //toDoubleOrNull converts an int to a double
     val trackingDuration = amountInput.toDoubleOrNull() ?: 0.0
@@ -62,18 +62,18 @@ fun StartTrackingScreen(
 
         /** --------------- Enter the phone number ------------------ */
         //tracking_start_friends
-        Text(
+/*        Text(
             text = stringResource(id = R.string.tracking_start_friends),
             fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Start)
-        )
+        )*/
 
-        PhoneNumberEntryField(
+/*        PhoneNumberEntryField(
             value = phoneNumber,
             onValueChange = {
                 phoneNumber = it
             }
-        )
+        )*/
 
         /** Friend(s) -- placeholder images for prototype */
 /*
@@ -145,6 +145,14 @@ fun StartTrackingScreen(
         Spacer(modifier = Modifier.height(48.dp))
         */
 
+        /**------------- NOTICE: THIS WILL OPEN A TEXT MESSAGE -------------- */
+        Text(
+            text = stringResource(
+                id = R.string.tracking_start_warning_about_opening_SMS),
+            fontSize = 16.sp,
+            modifier = Modifier.align(Alignment.Start)
+        )
+
         /**-----------------SEND INVITATION BUTTON --------------------------*/
 
         InviteToStartTrackingButton(onClick = { onStartTrackingButtonClicked(amountInput) })
@@ -154,7 +162,7 @@ fun StartTrackingScreen(
     }
 }
 
-@Composable
+/*@Composable
 fun PhoneNumberEntryField(value: String, onValueChange: (String) -> Unit){
     TextField(
         value = value,
@@ -171,7 +179,7 @@ fun PhoneNumberEntryField(value: String, onValueChange: (String) -> Unit){
     //label - placeholder text for an empty text field
     //KeyboardType.Number - uses only the numbers keyboard - no other options
     //singleLine - ensures the input is on one line
-}
+}*/
 
 @Composable
 fun TimeLimitEntryField(value: String, onValueChange: (String) -> Unit){

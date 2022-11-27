@@ -50,7 +50,7 @@ class SettingsDataStore (private val context: Context){
             val isTracking = preferences[PreferenceKeys.IS_TRACKING] ?: false
             val isSharingLocation = preferences[PreferenceKeys.IS_SHARING_LOCATION] ?: false
             val trackLength = preferences[PreferenceKeys.TRACK_LENGTH] ?: 0
-            val phoneNumber = preferences[PreferenceKeys.PHONE_NUMBER] ?: defaultPhoneNumber
+            //val phoneNumber = preferences[PreferenceKeys.PHONE_NUMBER] ?: defaultPhoneNumber
             SettingsState(isTracking, isSharingLocation, name, trackLength)
         }
 
@@ -78,11 +78,11 @@ class SettingsDataStore (private val context: Context){
         }
     }
 
-    suspend fun savePhoneNumberToPreferencesStore(phoneNumber: String){
+   /* suspend fun savePhoneNumberToPreferencesStore(phoneNumber: String){
         context.dataStore.edit { preferences ->
             preferences[PreferenceKeys.PHONE_NUMBER] = phoneNumber
         }
-    }
+    }*/
 }
 
 data class SettingsState (
