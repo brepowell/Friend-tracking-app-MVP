@@ -115,9 +115,9 @@ fun MeetMeApp(
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = MeetMeScreen.valueOf(
-        backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
-    )
+    val currRoute = backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
+    val screenName = currRoute.split("/")[0] // remove any parameters from the route
+    val currentScreen = MeetMeScreen.valueOf(screenName)
 
     /** ------------------------------- THE APP BAR --------------------------------- */
     Scaffold (
