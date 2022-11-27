@@ -1,7 +1,6 @@
 package com.css545.meetme
 
 
-import android.Manifest.permission_group.SMS
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -196,7 +195,6 @@ fun MeetMeApp(
                         val goTo = Uri.parse("$uri/Map/1234")
                         val intent = Intent(Intent.ACTION_VIEW, goTo)
                         context.startActivity(intent, null)
-
                     }
                 )
             }
@@ -259,7 +257,8 @@ fun MeetMeApp(
                         }
 
                         /** NAVIGATE TO MAP SCREEN */
-                        navController.navigate("Map/{sessionID}")
+                        // TODO - CHANGE TO AN INTENT
+                        //navController.navigate("Map/{sessionID}")
                     },
 
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
