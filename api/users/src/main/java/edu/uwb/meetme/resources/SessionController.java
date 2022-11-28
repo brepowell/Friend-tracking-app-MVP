@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,14 +33,21 @@ public class SessionController {
     }
 
     @RequestMapping(method= RequestMethod.POST, value="/session", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Session addSession(@RequestBody SessionPayload sessionPayload) {
+    public Session addSession(@RequestBody SessionPayload sessionPayload,
+                              @AuthenticationPrincipal UserDetails principal) {
         User owner = userService.getUser(sessionPayload.owner_id);
+        // Check the owner is the currently logged user
+        if (!owner.getEmail().equals(principal.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wrong session Owner ID");
+        }
+
         Session session = new Session();
         session.setDuration(sessionPayload.duration);
         session.setOwner(owner);
         Session savedSession = sessionService.addSession(session);
         owner.setTrackingSessionId(savedSession.getId());
-        return session;
+        userService.updateUser(owner);
+        return sessionService.getSession(savedSession.getId());
     }
 
     @RequestMapping(method = RequestMethod.POST, value="/session/{id}/adduser/{userId}")

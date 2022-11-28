@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -111,15 +113,34 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/location", params="email", method = RequestMethod.GET)
-    public Location getUserLocation(@RequestParam("email") String email) {
+    public Location getUserLocation(@RequestParam("email") String email,
+                                    @AuthenticationPrincipal UserDetails principal) {
+        // Get logged user credentials
+        logger.info("Current logged user: " + principal.getUsername());
+        User loggedUser = userService.getUser(principal.getUsername());
+        Long loggedUserTrackingSessionId = loggedUser.getTrackingSessionId();
+
         logger.info("Retrieving location for user with email: " + email);
         User user = userService.getUser(email);
+        Long userSessionId = user.getTrackingSessionId();
+
+        // Throw ResponseStatusException if users are not in the same tracking session
+        if (!loggedUserTrackingSessionId.equals(userSessionId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not allow to access location of: " + email);
+        }
+
         return user.getLocation();
     }
 
     @RequestMapping(value = "/users/location", method = RequestMethod.POST)
-    public ResponseMessage updateLocation(@RequestBody Location location) {
+    public ResponseMessage updateLocation(@RequestBody Location location,
+                                          @AuthenticationPrincipal UserDetails principal) {
         User user = userService.getUser(location.getId());
+        // check that the user is the authenticated one
+        if (!user.getEmail().equals(principal.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not allow to update this location");
+        }
+
         location.setUser(user);
         try {
             logger.info("Updating location for user with email: " + user.getEmail());
@@ -132,7 +153,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users/{id}/ownSessions")
+    @RequestMapping(value = "/users/{id}/activeSessions")
     public Set<Session> getOwnSessions(@PathVariable Long id) {
         return userService.getOwnSessions(id);
     }

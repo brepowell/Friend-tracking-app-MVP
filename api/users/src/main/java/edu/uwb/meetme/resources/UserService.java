@@ -3,8 +3,10 @@ package edu.uwb.meetme.resources;
 import edu.uwb.meetme.models.Session;
 import edu.uwb.meetme.models.User;
 import edu.uwb.meetme.models.UserRepository;
+import net.bytebuddy.dynamic.TypeResolutionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Retrieves all the Gym Members
@@ -55,7 +60,6 @@ public class UserService {
      * @return  The newly added member
      */
     public User addUser(User member) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
         return userRepository.save(member);

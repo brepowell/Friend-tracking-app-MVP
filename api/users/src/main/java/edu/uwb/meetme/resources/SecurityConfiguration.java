@@ -1,6 +1,7 @@
 package edu.uwb.meetme.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/meetme/api/v1/**").authenticated()
+                .antMatchers("/meetme/api/v1/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .and().formLogin().defaultSuccessUrl("/meetme/api/v1/successlogin");
 
@@ -50,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Returns the password encoder for the application
      * @return  The password encoder por the application
      */
-    @Autowired
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
