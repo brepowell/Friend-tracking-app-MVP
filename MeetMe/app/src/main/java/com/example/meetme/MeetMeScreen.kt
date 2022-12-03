@@ -168,11 +168,6 @@ fun MeetMeApp(
                             settingsDataStore.saveTrackLengthToPreferencesStore(it)
                         }
 
-/*                        scope.launch {
-                            *//** SAVE THE USER INPUT FOR THE FRIEND'S PHONE NUMBER *//*
-                            settingsDataStore.savePhoneNumberToPreferencesStore(it)
-                        }
-*/
                         scope.launch {
                             val hours = settingsState.value.trackLength.toString()
 
