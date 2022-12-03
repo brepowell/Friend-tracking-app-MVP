@@ -27,7 +27,14 @@ public class SessionController {
     private UserService userService;
 
     @RequestMapping("/session/{id}")
-    public Session getSession(@PathVariable Long id) {
+    public Session getSession(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
+        // Check that the logged user belongs to this tracking session
+        User loggedUser = userService.getUser(principal.getUsername());
+        if (!loggedUser.getTrackingSessionId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                      "User not allow to access to retrieve information for session with id: " + id);
+        }
+
         logger.info("Session information has been retrieve Id: " + id);
         return sessionService.getSession(id);
     }
@@ -36,7 +43,7 @@ public class SessionController {
     public Session addSession(@RequestBody SessionPayload sessionPayload,
                               @AuthenticationPrincipal UserDetails principal) {
         User owner = userService.getUser(sessionPayload.owner_id);
-        // Check the owner is the currently logged user
+        // Check that the owner is the currently logged user
         if (!owner.getEmail().equals(principal.getUsername())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wrong session Owner ID");
         }
@@ -51,8 +58,20 @@ public class SessionController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value="/session/{id}/adduser/{userId}")
-    public Session addUser(@PathVariable Long id, @PathVariable Long userId) {
+    public Session addUser(@PathVariable Long id, @PathVariable Long userId,
+                           @AuthenticationPrincipal UserDetails principal) {
         User user = userService.getUser(userId);
+        // Check that the user to be added is the authenticated one
+        if (!principal.getUsername().equals(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to add the user to a session");
+        }
+
+        // Check that the session has not ended yet
+        Session currentSession = sessionService.getSession(id);
+        if (currentSession.getEndTime() == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This session has already expired");
+        }
+
         user.setTrackingSessionId(id);
         userService.updateUser(user);
         Session session = sessionService.getSession(id);
@@ -83,7 +102,7 @@ public class SessionController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Session has not started yet.");
         }
 
-        // Check that end time is greater than start time
+        // Check that end time is greater than start time, this should never happen
 //        if (session.getStartTime().compareTo(currentTime) > 0) {
 //            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed: Start time is after end time");
 //        }

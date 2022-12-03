@@ -36,6 +36,7 @@ public class UserController {
      */
     @RequestMapping("/users")
     public List<User> getAllUsers() {
+        // TODO: remove or secure end-point
         logger.info("All users information has been retrieved.");
         return userService.getAllUsers();
     }
@@ -46,7 +47,13 @@ public class UserController {
      * @return  The information about the given user
      */
     @RequestMapping(value="/users", params="email", method = RequestMethod.GET)
-    public User getUser(@RequestParam("email") String email) {
+    public User getUser(@RequestParam("email") String email, @AuthenticationPrincipal UserDetails principal) {
+        if (!principal.getUsername().equals(email)) {
+            // User is only allowed to retrieve his own information
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You are not allowed to retrieve the profile of the user with email: " + email);
+        }
+
         logger.info("Information has been retrieved for user with email: " + email);
         return userService.getUser(email);
     }
@@ -57,7 +64,16 @@ public class UserController {
      * @return The information about the given user
      */
     @RequestMapping("/users/{id}")
-    public User getUser(@PathVariable Long id) {
+    public User getUser(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
+        // Get logged user credentials
+        logger.info("Current logged user: " + principal.getUsername());
+        User loggedUser = userService.getUser(principal.getUsername());
+        if (!loggedUser.getId().equals(id)) {
+            // user is only allowed to retrieve his own information
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                      "You are not allowed to retrieve the profile of the user with id: " + id);
+        }
+
         logger.info("Information has been retrieved for user with id: " + id);
         return userService.getUser(id);
     }
@@ -90,7 +106,17 @@ public class UserController {
      * @param user    JSON object with all user information
      */
     @RequestMapping(method=RequestMethod.PUT, value="/users/{id}")
-    public ResponseMessage updateUser(@RequestBody User user) {
+    public ResponseMessage updateUser(@RequestBody User user,
+                                      @AuthenticationPrincipal UserDetails principal) {
+        // Get logged user credentials
+        logger.info("Current logged user: " + principal.getUsername());
+        User loggedUser = userService.getUser(principal.getUsername());
+        if (!user.getId().equals(loggedUser.getId())) {
+            // user is only allowed to update his own information
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                      "You are not allowed to update the profile of user with id: " + user.getId());
+        }
+
         try {
             userService.updateUser(user);
             logger.info("Record has been modified for user with email: " + user.getEmail());
@@ -107,7 +133,14 @@ public class UserController {
      * @param id    The id of the user to be deleted
      */
     @RequestMapping(method=RequestMethod.DELETE, value="/users/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
+        User loggedUser = userService.getUser(principal.getUsername());
+        if (!loggedUser.getId().equals(id)) {
+            // User is only allowed to delete itself
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                      "You are not allowed to delete the user with id: " + id);
+        }
+
         userService.deleteUser(id);
         logger.info("Deleted user with id: " + id);
     }
@@ -124,9 +157,13 @@ public class UserController {
         User user = userService.getUser(email);
         Long userSessionId = user.getTrackingSessionId();
 
+        // If the user is not the logged one, check that it belongs to the same tracking session
         // Throw ResponseStatusException if users are not in the same tracking session
-        if (!loggedUserTrackingSessionId.equals(userSessionId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not allow to access location of: " + email);
+        if (!loggedUser.getEmail().equals(email)) {
+            if (!loggedUserTrackingSessionId.equals(userSessionId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                          "User not allow to access location of: " + email);
+            }
         }
 
         return user.getLocation();
