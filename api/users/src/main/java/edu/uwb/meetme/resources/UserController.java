@@ -191,7 +191,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}/activeSessions")
-    public Set<Session> getOwnSessions(@PathVariable Long id) {
+    public Set<Session> getOwnSessions(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
+        User user = userService.getUser(id);
+        // check that the user is the authenticated one
+        if (!user.getEmail().equals(principal.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                      "You are not allowed to retrieve this user's sessions");
+        }
         return userService.getOwnSessions(id);
     }
 
