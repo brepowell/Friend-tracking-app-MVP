@@ -174,31 +174,34 @@ fun MeetMeApp(
                         }
 */
                         scope.launch {
-                            delay(2000)
-
-                            /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
-                            val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
-                            val linkToMeetMe =
-                                "$uri/Consent/$session" //Need to figure out a unique link?
                             val hours = settingsState.value.trackLength.toString()
-                            val res = context.resources
-                            val message =
-                                res.getString(
-                                    R.string.tracking_handshake_initial_message,
-                                    hours,
-                                    linkToMeetMe
-                                )
-                            //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
-                            //Test phone 1 is 6505551212
-                            //Test phone 2 is 16505556789
-                            // TODO: REMOVE THE PHONE NUMBER FROM THIS PART AND HAVE A MESSAGE
-                            //  ABOUT WHAT SHOULD HAPPEN
-                            //val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
-                            sendIntent(context, message)
 
-                            /** NAVIGATE TO WAITING SCREEN */
-                            delay(2000)
-                            navController.navigate(MeetMeScreen.Waiting.name)
+                            delay(1000)
+                            //Input validation -- do not proceed if the hours is not a good range
+                            if(hours.toInt() in 1..168) {
+                                /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
+                                val session = "1234" // TODO: CREATE A UNIQUE SESSION ID NUMBER
+                                val linkToMeetMe =
+                                    "$uri/Consent/$session" //Need to figure out a unique link?
+                                val res = context.resources
+                                val message =
+                                    res.getString(
+                                        R.string.tracking_handshake_initial_message,
+                                        hours,
+                                        linkToMeetMe
+                                    )
+                                //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
+                                //Test phone 1 is 6505551212
+                                //Test phone 2 is 16505556789
+                                // TODO: REMOVE THE PHONE NUMBER FROM THIS PART AND HAVE A MESSAGE
+                                //  ABOUT WHAT SHOULD HAPPEN
+                                //val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
+                                sendIntent(context, message)
+
+                                /** NAVIGATE TO WAITING SCREEN */
+                                delay(2000)
+                                navController.navigate(MeetMeScreen.Waiting.name)
+                            }
                         }
                     },
 

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.css545.meetme.ConsentActivity
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
 import com.example.meetme.ui.LocationViewModel
