@@ -191,11 +191,6 @@ fun MeetMeApp(
                                         linkToMeetMe
                                     )
                                 //"Please join me in a tracking session for $hours hours on MeetMe $linkToMeetMe"
-                                //Test phone 1 is 6505551212
-                                //Test phone 2 is 16505556789
-                                // TODO: REMOVE THE PHONE NUMBER FROM THIS PART AND HAVE A MESSAGE
-                                //  ABOUT WHAT SHOULD HAPPEN
-                                //val phoneNumber = "6505551212" //RECIPIENT'S PHONE NUMBER
                                 sendIntent(context, message)
 
                                 /** NAVIGATE TO WAITING SCREEN */
