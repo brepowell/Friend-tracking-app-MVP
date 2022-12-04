@@ -169,9 +169,9 @@ fun MeetMeApp(
                         }
 
                         scope.launch {
+                            delay(1000)
                             val hours = settingsState.value.trackLength.toString()
 
-                            delay(1000)
                             //Input validation -- do not proceed if the hours is not a good range
                             if(hours.toInt() in 1..168) {
                                 /** SEND AN SMS MESSAGE WITH A DEEPLINK TO THE CONSENT PAGE FOR USER 2 **/
