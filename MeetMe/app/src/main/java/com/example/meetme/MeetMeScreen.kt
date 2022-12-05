@@ -333,20 +333,16 @@ fun MeetMeApp(
             composable(route = MeetMeScreen.Settings.name) {
                 SettingsScreen(
                     settingsState = settingsState.value,
-                    onUsernameChanged = {
-                        // TODO: This is a hack. Username should not be saved every time the
-                        //  textbox changes. Perhaps use a ViewModel or LiveData.
-                        //  Perhaps this logic should be part of the SettingsScreen
-                        scope.launch {
-                            settingsDataStore.saveNameToPreferencesStore(it)
-                        }
-                    },
                     onLocationSharingChanged = {
                         scope.launch {
                             settingsDataStore.saveSharingLocationToPreferencesStore(it)
                         }
                     },
-                    onUpdatePasswordClicked = { /* TODO: Implement */},
+                    onUpdatePasswordClicked = {
+                        /* TODO: Implement. This will require an HTTP request to save
+                        *   the new password in the database.
+                        */ 
+                    },
 
                     /** NAVIGATE TO HELP SCREEN */
                     onHelpButtonClicked = { navController.navigate(MeetMeScreen.Help.name) }
