@@ -26,6 +26,12 @@ public class SessionController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Retrieve the session with the given ID
+     * @param id        The ID of the target session
+     * @param principal The currently authenticated user
+     * @return  The session with the given ID
+     */
     @RequestMapping("/session/{id}")
     public Session getSession(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
         // Check that the logged user belongs to this tracking session
@@ -39,6 +45,12 @@ public class SessionController {
         return sessionService.getSession(id);
     }
 
+    /**
+     * Add a new session to the database
+     * @param sessionPayload    The information about the new session to be stored in the database
+     * @param principal         The currently authenticated user
+     * @return  The information for the newly created session
+     */
     @RequestMapping(method= RequestMethod.POST, value="/session", produces = MediaType.APPLICATION_JSON_VALUE)
     public Session addSession(@RequestBody SessionPayload sessionPayload,
                               @AuthenticationPrincipal UserDetails principal) {
@@ -57,6 +69,13 @@ public class SessionController {
         return sessionService.getSession(savedSession.getId());
     }
 
+    /**
+     * Add an user to the session with the given ID
+     * @param id        The ID of the target session
+     * @param userId    The ID of the user to be added to the session
+     * @param principal The currently authenticated user
+     * @return  The updated information of the session with user added to it
+     */
     @RequestMapping(method = RequestMethod.POST, value="/session/{id}/adduser/{userId}")
     public Session addUser(@PathVariable Long id, @PathVariable Long userId,
                            @AuthenticationPrincipal UserDetails principal) {
@@ -78,6 +97,11 @@ public class SessionController {
         return session;
     }
 
+    /**
+     * Start a tracking session by marking the start time as the current time
+     * @param id    The ID of the session to be started
+     * @return  The updated session containing the start time
+     */
     @RequestMapping(method = RequestMethod.POST, value="/session/{id}/start")
     public Session startSession(@PathVariable Long id) {
         LocalDateTime currentTime = LocalDateTime.now();
@@ -92,6 +116,11 @@ public class SessionController {
         return sessionService.updateSession(session);
     }
 
+    /**
+     * End the tracking session with the given ID by adding the current time as end time
+     * @param id    The ID of the session to be ended
+     * @return  The updated session containing the end time
+     */
     @RequestMapping(method = RequestMethod.POST, value="/session/{id}/end")
     public Session endSession(@PathVariable Long id) {
         LocalDateTime currentTime = LocalDateTime.now();

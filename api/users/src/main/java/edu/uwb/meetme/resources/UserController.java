@@ -145,6 +145,12 @@ public class UserController {
         logger.info("Deleted user with id: " + id);
     }
 
+    /**
+     * Retrieves the last known location of the user with the given email
+     * @param email     Email of the target user
+     * @param principal Details of the currently authenticated user
+     * @return  The last know location of the user with the given email
+     */
     @RequestMapping(value = "/users/location", params="email", method = RequestMethod.GET)
     public Location getUserLocation(@RequestParam("email") String email,
                                     @AuthenticationPrincipal UserDetails principal) {
@@ -162,13 +168,20 @@ public class UserController {
         if (!loggedUser.getEmail().equals(email)) {
             if (!loggedUserTrackingSessionId.equals(userSessionId)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                          "User not allow to access location of: " + email);
+                          "User not allowed to access location of: " + email);
             }
         }
 
         return user.getLocation();
     }
 
+    /**
+     * Updated the location of the given user.
+     * @param location  The new user location
+     * @param principal The currently authenticated user
+     * @return
+     * @throws ResponseStatusException if the user id in the request body is no the currently authenticated one.
+     */
     @RequestMapping(value = "/users/location", method = RequestMethod.POST)
     public ResponseMessage updateLocation(@RequestBody Location location,
                                           @AuthenticationPrincipal UserDetails principal) {
@@ -190,6 +203,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Retrieves the active session owned by the given user
+     * @param id        The id of the user that owns the sessions
+     * @param principal The currently authenticated user
+     * @return  The list of sessions own by the given user
+     */
     @RequestMapping(value = "/users/{id}/activeSessions")
     public Set<Session> getOwnSessions(@PathVariable Long id, @AuthenticationPrincipal UserDetails principal) {
         User user = userService.getUser(id);
