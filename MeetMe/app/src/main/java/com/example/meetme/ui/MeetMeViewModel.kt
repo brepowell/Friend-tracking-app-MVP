@@ -1,14 +1,10 @@
 package com.css545.meetme.ui
 
 import android.content.Context
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import com.css545.meetme.data.SettingsDataStore
 import com.css545.meetme.data.SettingsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,14 +18,6 @@ private const val LAYOUT_PREFERENCES_NAME = "layout_preferences"
 private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = LAYOUT_PREFERENCES_NAME)
 
 class MeetMeViewModel() : ViewModel() {
-
-    // TODO: add ability to save to DataStore in viewModel
-//    private lateinit var settingsDataStore: SettingsDataStore
-//
-//    init {
-//        settingsDataStore = SettingsDataStore(context)
-//        settingsDataStore.preferencesFlow.asLiveData().observe()
-//    }
 
     /**
      * Expose the current settings state
@@ -61,9 +49,3 @@ class MeetMeViewModel() : ViewModel() {
         }
     }
 }
-
-//data class SettingsState (
-//    val isTracking: Boolean = false,
-//    val isSharingLocation: Boolean = false,
-//    val username: String = "jardiamj"
-//)

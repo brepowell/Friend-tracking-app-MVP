@@ -59,6 +59,7 @@ fun SettingsScreen(
             }
         )
 
+        /** -------------- Old Password Text Box ---------------------------------- */
         Spacer(modifier = Modifier.height(10.dp))
         Divider(color = Color.Black, thickness = 1.dp)
         // Password
@@ -70,6 +71,7 @@ fun SettingsScreen(
             label = "Current Password"
         )
 
+        /** -------------- New Password Text Box ------------------------------------- */
         var newPassword by rememberSaveable { mutableStateOf("") }
         PasswordTextField(
             text = newPassword,
@@ -77,6 +79,7 @@ fun SettingsScreen(
             label = "New Password"
         )
 
+        /** -------------- Password Confirmation ------------------------------------- */
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         val confirmationNotMatch by remember {
             derivedStateOf {
