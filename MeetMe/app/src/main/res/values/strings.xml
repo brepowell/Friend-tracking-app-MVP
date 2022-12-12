@@ -34,7 +34,9 @@
     choose your favorite text messaging app and text the invitation link to your friend.</string>
 
     <!--Waiting for consent text: -->
-    <string name="waiting_for_consent">An invitation has been sent to %s. Please wait.
+    <string name="waiting_for_consent">Make sure to send the link to your friend
+        through your favorite text messaging app.
+        Please wait for a text message in reply.
         If you would like to cancel the invitation, press cancel.</string>
 
     <!--Confirmation limbo text: -->
