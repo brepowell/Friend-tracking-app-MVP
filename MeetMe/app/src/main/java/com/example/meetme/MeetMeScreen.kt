@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -197,9 +198,7 @@ fun MeetMeApp(
 
                     // TODO: REMOVE WHEN FINISHED TESTING 2 LOCATIONS
                     onMapButtonClicked = {
-                        val goTo = Uri.parse("$uri/Map/1234")
-                        val intentToMap = Intent(Intent.ACTION_VIEW, goTo)
-                        context.startActivity(intentToMap, null)
+                        navController.navigate(MeetMeScreen.Map.name)
                     }
                 )
             }
@@ -261,9 +260,9 @@ fun MeetMeApp(
                             sendIntent(context, message)
                         }
 
+
                         /** NAVIGATE TO MAP SCREEN */
-                        // TODO - CHANGE TO AN INTENT
-                        //navController.navigate("Map/{sessionID}")
+                        navController.navigate(MeetMeScreen.Map.name)
                     },
 
                     /** NAVIGATE BACK TO START TRACKING SCREEN */
@@ -290,7 +289,7 @@ fun MeetMeApp(
              * from a deep link.
              * */
             composable(route = MeetMeScreen.Map.name,
-                arguments = listOf(navArgument("sessionID") { type = NavType.IntType}),
+                arguments = listOf(navArgument("sessionID") { type = NavType.IntType ; defaultValue=123}),
                 deepLinks = listOf(navDeepLink { uriPattern = "$uri/Map/{sessionID}" })
             ) {
                 MapScreen(

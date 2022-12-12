@@ -20,6 +20,9 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
     private val _latLong: MutableState<LatLng> = mutableStateOf(LatLng(47.6101, -122.2015))
     val latLng: MutableState<LatLng> get() = _latLong
 
+    private val _latLong2: MutableState<LatLng> = mutableStateOf(LatLng(47.6101, -122.2015))
+    val latLng2: MutableState<LatLng> get() = _latLong2
+
     private var location : Location = Location(LocationManager.GPS_PROVIDER)
 
     fun updateLocation(location: Location) {
@@ -37,9 +40,8 @@ class LocationViewModel(private val context: Context) : ViewModel(), LocationLis
             e.printStackTrace()
         }
     }
-
-
     override fun onLocationChanged(location: Location) {
         _latLong.value = LatLng(location.latitude, location.longitude)
+        _latLong2.value = LatLng(location.latitude-.001,location.longitude-.001);
     }
 }
