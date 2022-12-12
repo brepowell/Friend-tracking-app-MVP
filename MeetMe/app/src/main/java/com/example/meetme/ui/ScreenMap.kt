@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.css545.meetme.R
 import com.css545.meetme.ui.components.CustomButton
 import com.example.meetme.ui.LocationViewModel
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -33,9 +34,11 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
          * the location is a MutableState variable, that way the map is recompose every time the
          * location updates.
          * */
+
         locationViewModel.getLocation()
         var location = locationViewModel.latLng
-        GoogleMapView(location.value)
+        var friend = locationViewModel.latLng2
+        GoogleMapView(location.value,friend.value)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,9 +56,10 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
 
 @Composable
 fun GoogleMapView (
-    location: LatLng
+    location: LatLng, friendLocation:LatLng
 ) {
     val labelState = MarkerState(position = location)
+    val friendState = MarkerState(position = friendLocation)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(location, 10f)
     }
@@ -65,8 +69,14 @@ fun GoogleMapView (
     ) {
         Marker(
             state = labelState,
-            title = "Singapore",
-            snippet = "Marker in Singapore"
+            title = "You",
+            snippet = "User Location"
+        )
+        Marker(
+            state = friendState,
+            title = "Friend",
+            snippet = "Friend Location",
+            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
         )
     }
 }
