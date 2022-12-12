@@ -61,7 +61,7 @@ fun GoogleMapView (
     val labelState = MarkerState(position = location)
     val friendState = MarkerState(position = friendLocation)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(location, 10f)
+        position = CameraPosition.fromLatLngZoom(location, 17f)
     }
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
