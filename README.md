@@ -3,6 +3,11 @@
 ***Team:*** Finders || Keepers
 ***Team members:*** Melody B. (Prarin Behdarvandian), Jardi Martinez Jordan, and Breanna Powell
 
+# Final Paper
+
+The final paper for the MeetMe app is in the following PDF file:
+- [MeetMe Final Paper Document](MeetMe_Final_Paper.pdf)
+
 # Basic Functionality ("Alpha"):
 - Map works to track one user’s current location
     - GPS of device must be on to work correctly
