@@ -1,36 +1,71 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">MeetMe</string>
-    <string name="back_button">Back</string>
+
+    <!-- Generic Button Labels -->
+    <string name="button_back">Back</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="button_cancel">Cancel Invitation</string>
+    <string name="button_continue">Continue</string>
 
     <!-- Screens -->
-    <string name="map">Map</string>
-    <string name="start_tracking">Start Tracking</string>
-    <string name="settings">Settings</string>
-    <string name="help">Help</string>
-    <string name="consent">Consent</string>
-    <string name="stop_tracking_screen">Stop Tracking</string>
+    <string name="screen_title_map">Map</string>
+    <string name="screen_title_tracking_start">Start Tracking</string>
+    <string name="screen_title_waiting_for_consent">Waiting for Consent</string>
+    <string name="screen_title_settings">Settings</string>
+    <string name="screen_title_help">Help</string>
+    <string name="screen_title_consent">Consent</string>
+    <string name="screen_title_tracking_stop">Stop Tracking</string>
 
     <!--Start tracking text: -->
-    <string name="tracking_start_prompt">You have no active tracking sessions going. Would you like to start a tracking session?</string>
+    <string name="tracking_start_prompt">You have no active tracking sessions going.
+        Would you like to start a tracking session?</string>
     <string name="tracking_start_button">Send Invitation to Start Tracking</string>
-    <string name="tracking_start_friends">Friend(s) to invite: </string>
+    <string name="tracking_start_friends">Enter the phone number of your friend </string>
+    <string name="tracking_start_phone_number">Phone Number </string>
+    <string name="tracking_start_default_phone_number">Input 10 digit phone number with no dashes</string>
     <string name="tracking_start_duration">Enter tracking duration: </string>
     <string name="tracking_start_units_hours">Hours</string>
     <string name="tracking_start_tracking_expiration">Tracking expires: %s </string>
     <string name="tracking_start_bill_amount">Bill amount: %s </string>
     <string name="tracking_start_send_invite">Send Invitation</string>
+    <string name="tracking_start_warning_about_opening_SMS">When you click the button below, please
+    choose your favorite text messaging app and text the invitation link to your friend.</string>
+
+    <!--Waiting for consent text: -->
+    <string name="waiting_for_consent">Make sure to send the link to your friend
+        through your favorite text messaging app.
+        Please wait for a text message in reply.
+        If you would like to cancel the invitation, press cancel.</string>
 
     <!--Confirmation limbo text: -->
-    <string name="tracking_handshake_notification">Your friend %s has invited you to a tracking session</string>
-    <string name="tracking_handshake_go_to_app_button">Go to MeetMe</string>
-    <string name="tracking_handshake_consent">Do you consent to being tracked for %s hours?</string>
-    <string name="agree">Yes</string>
-    <string name="disagree">No</string>
-
-    <string name="help_header">Help with MeetMe</string>
-    <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked. If a person does not want to be tracked, they can go into the Settings menu and make themselves unavailable for tracking.</string>
+    <string name="tracking_handshake_initial_message">Please join me in a
+        tracking session for %1$s hours on MeetMe %2$s</string>
+    <string name="tracking_handshake_consent_page_prompt">Please join me in a
+        tracking session for %s hours on MeetMe.</string>
+    <string name="tracking_handshake_consent_ask">Do you consent to being tracked for %s hours?</string>
+    <string name="tracking_handshake_consent_yes">"Yes, I will join you on MeetMe. Let's go to the map! %s"</string>
+    <string name="tracking_handshake_consent_no">"No, thank you. I cannot join you right now. %s"</string>
 
     <!--Stop tracking text: -->
     <string name="tracking_end_prompt">Are you sure you want to end the tracking session?</string>
+
+    <!--Help text: -->
+    <string name="help_header">Help with MeetMe</string>
+    <string name="help_info">MeetMe is designed to be used only when both parties agree to be tracked.
+        If a person does not want to be tracked, they can go into the Settings menu and
+        make themselves unavailable for tracking.</string>
+
+    <!--PERMISSIONS:-->
+    <string name="permissions_runtime_permissions">Runtime permissions in Android</string>
+    <string name="button_request_permissions">Request Permissions</string>
+    <string name="button_ok">OK</string>
+    <string name="permission_required">Camera access is required to display the camera preview.</string>
+    <string name="permission_granted">Permission is granted. You can use the camera now.</string>
+    <string name="permission_denied_location_request_rationale">MeetMe needs access to your background location
+        to be able to provide you with the best possible tracking service.
+        Please enable background location access. If you decline background access,
+        you will not be able to track your friend accurately. </string>
 
 </resources>
