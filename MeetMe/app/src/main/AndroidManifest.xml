@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--PERMISSIONS FOR ACCESSING LOCATION DATA -->
+    <!--Access the rough location in case permission is denied for precise location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--Access the precise location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--Access location continuously -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <!---->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetMe"
         tools:targetApi="31">
+        <!-- MAP META DATA -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <!-- Apache HTTP Legacy library for map-->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,14 +43,49 @@
             android:theme="@style/Theme.MeetMe">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
+
+
+            <!--embeds the version of Google Play services that the app was compiled with. -->
+            <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+
+            <intent-filter>
+                <!--below line is to set the action to our intent to view-->
+                <action android:name="android.intent.action.VIEW" />
+                <!--on below line we are adding a default category to our intent-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--on below line we are adding a category to make our app browsable-->
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--on below line we are specifying the host name and
+                    the scheme type from which we will be calling our app-->
+                <data
+                    android:host="www.meetme.com"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <!--below is the same filter as above just the scheme is changed to http -->
+            <!--so we can open our app with the url starting with https and http as well-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.meetme.com"
+                    android:scheme="http" />
+            </intent-filter>
+
         </activity>
+
+        <activity android:name=".ConsentActivity"/>
     </application>
 
 </manifest>
