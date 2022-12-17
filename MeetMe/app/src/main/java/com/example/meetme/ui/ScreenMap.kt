@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,10 +18,7 @@ import com.example.meetme.ui.LocationViewModel
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 
 
 @Composable
@@ -60,8 +59,11 @@ fun GoogleMapView (
 ) {
     val labelState = MarkerState(position = location)
     val friendState = MarkerState(position = friendLocation)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(location, 17f)
+    val pos = remember(location.latitude, location.longitude) { LatLng(location.latitude, location.longitude) }
+    val cameraPositionState = rememberSaveable(pos, saver = CameraPositionState.Saver) {
+        CameraPositionState(
+            position = CameraPosition.fromLatLngZoom(pos, 17f),
+        )
     }
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
