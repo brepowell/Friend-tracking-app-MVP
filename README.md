@@ -1,1 +1,10 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=9110828&assignment_repo_type=AssignmentRepo)
+
+# Project Name: MeetMe
+***Team:*** Finders || Keepers
+***Team members:*** Melody B. (Prarin Behdarvandian), Jardi Martinez Jordan, and Breanna Powell
+
+Here is our updated plan:
+[Updated Project Plan](https://docs.google.com/document/d/1lmta3Ku5QuoJBZ1p7y5C__nRY3mDVDhxJSrwUcbpZao/edit?usp=sharing)
+
+Here is our prototype document for Checkpoint 2, with the MVP features, breakdown of tasks, etc:
+[Prototype Document](https://docs.google.com/document/d/1092YUAJ7lwsJ6vis1JZsLcatlr38prw7zgCVGFQG3oY/edit?usp=sharing)
