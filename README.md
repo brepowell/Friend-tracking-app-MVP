@@ -1,7 +1,10 @@
-
 # Project Name: MeetMe
 ***Team:*** Finders || Keepers
 ***Team members:*** Melody B. (Prarin Behdarvandian), Jardi Martinez Jordan, and Breanna Powell
+
+# Navigation:
+[UI Files](MeetMe/app/src/main/java/com/example/meetme/ui)
+* ScreenConsent.kt - This page will display when User #2 gets a request to join a tracking session
 
 # Final Paper
 
