@@ -5,23 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,7 +38,7 @@ import kotlinx.coroutines.launch
 
 /** DEFINING ROUTES (A route is "a string that corresponds to a destination"):
     TrackingStart:  The screen where the user chooses the number of hours and sends an invitation
-    Waiting:        After the user has send an invitation, this screen shows
+    Waiting:        After the user has sent an invitation, this screen shows
     Consent:        After an invitation is received, this screen shows, asking for consent
     Map:            The map shows during tracking. Displays pins for all users
     Settings:       User preferences are here
@@ -62,6 +58,7 @@ enum class MeetMeScreen(@StringRes val title: Int) {
 /** NAVIGATION BAR ALONG THE TOP
  * This has a back button, the title of the page, and a settings button
  * */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeetMeAppbar (
     currentScreen: MeetMeScreen,
@@ -75,34 +72,23 @@ fun MeetMeAppbar (
         title = { Text(stringResource(currentScreen.title))},
         modifier = modifier,
         navigationIcon = {
-            Row (
-                horizontalArrangement = Arrangement.End
-            ){
-                if (canNavigateBack) {
-                    IconButton(onClick = navigateUp) {
-                        Icon (
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_back)
-                        )
-                    }
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon (
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.button_back)
+                    )
                 }
-
-
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = { onSettingsClicked() }
+            ) {
+                Icon(imageVector = Icons.Filled.Settings, contentDescription = null)
             }
         }
     )
-    /** THE TOP APP BAR - THE SETTINGS GEAR ICON */
-    Row (
-        horizontalArrangement = Arrangement.End
-    ){
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(
-            onClick = { onSettingsClicked() }
-        ) {
-            Icon(imageVector = Icons.Filled.Settings, contentDescription = null, tint = Color.White)
-        }
-    }
-
 }
 
 /** MEET ME APP -- ALL NAVIGATION HAPPENS HERE */
@@ -118,7 +104,20 @@ fun MeetMeApp(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currRoute = backStackEntry?.destination?.route ?: MeetMeScreen.Map.name
     val screenName = currRoute.split("/")[0] // remove any parameters from the route
-    val currentScreen = MeetMeScreen.valueOf(screenName)
+    val currentScreen = try {
+        MeetMeScreen.valueOf(screenName)
+    } catch (e: Exception) {
+        MeetMeScreen.Map
+    }
+
+    /** We use a DataStore for data that needs to survive app termination */
+    val settingsDataStore = remember(context) { SettingsDataStore(context) }
+    val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
+    val scope = rememberCoroutineScope()
+
+    // Select the starting screen depending on the current state.
+    val startScreen = if (settingsState.value.isTracking) MeetMeScreen.Map.name
+                      else MeetMeScreen.TrackingStart.name
 
     /** ------------------------------- THE APP BAR --------------------------------- */
     Scaffold (
@@ -131,25 +130,15 @@ fun MeetMeApp(
                 onSettingsClicked = { navController.navigate(MeetMeScreen.Settings.name) }
             )
         }
-    ) {
-
-        /** We use a DataStore for data that needs to survive app termination */
-        val settingsDataStore = SettingsDataStore(LocalContext.current)
-        val settingsState = settingsDataStore.preferencesFlow.collectAsState(initial = SettingsState())
-        val scope = rememberCoroutineScope()
-
-        /** ------------------------------ THE NAVIGATION CONTROLLER -----------------------------*/
-        // Select the starting screen depending on the current state.
-        val startScreen = if (settingsState.value.isTracking) MeetMeScreen.Map.name
-                          else MeetMeScreen.TrackingStart.name
+    ) { innerPadding ->
 
         /** ------------------------------- THE NAV HOST --------------------------------- */
         /** This is the main screen holder.
-         * We will add all of the routes in a NavHost composable function */
+         * We will add all the routes in a NavHost composable function */
         NavHost(
             navController = navController,
             startDestination = startScreen,
-            modifier = modifier.padding(10.dp)
+            modifier = modifier.padding(innerPadding).padding(10.dp)
         ) {
 
             val uri = "https://www.meetme.com"
@@ -224,7 +213,7 @@ fun MeetMeApp(
 
             /** THE CONSENT SCREEN NAVIGATION (mapped to a composable)
              * Here, the user sees that someone has invited them to a tracking session
-             * They can either consent to being tracked and then go to the maps screen
+             * They can either consent to being tracked and then go to the maps screen,
              * or they can decline and return to the start tracking screen.
              *
              * The deepLinks parameter will allow another app (an SMS app) to navigate here

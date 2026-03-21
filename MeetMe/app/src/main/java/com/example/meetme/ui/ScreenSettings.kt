@@ -3,15 +3,10 @@ package com.css545.meetme.ui
 import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Button
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -61,9 +56,9 @@ fun SettingsScreen(
 
         /** -------------- Old Password Text Box ---------------------------------- */
         Spacer(modifier = Modifier.height(10.dp))
-        Divider(color = Color.Black, thickness = 1.dp)
+        HorizontalDivider(color = Color.Black, thickness = 1.dp)
         // Password
-        Text("Change Password", style = MaterialTheme.typography.caption)
+        Text("Change Password", style = MaterialTheme.typography.labelSmall)
         var password by rememberSaveable { mutableStateOf("") }
         PasswordTextField(
             text = password,
@@ -112,7 +107,7 @@ fun SettingsScreen(
 
         // Toggle whether you can be found or not
         Spacer(modifier = Modifier.height(10.dp))
-        Divider(color = Color.Black, thickness = 1.dp)
+        HorizontalDivider(color = Color.Black, thickness = 1.dp)
         Spacer(modifier = Modifier.height(10.dp))
         ToggleSwitch(
             label = "Allow Location sharing: ",

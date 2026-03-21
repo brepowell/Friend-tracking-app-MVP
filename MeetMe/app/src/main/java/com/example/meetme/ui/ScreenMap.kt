@@ -1,9 +1,8 @@
 package com.css545.meetme.ui
 
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
-
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,8 +34,8 @@ fun MapScreen(onStopTrackButtonClicked: () -> Unit,
          * */
 
         locationViewModel.getLocation()
-        var location = locationViewModel.latLng
-        var friend = locationViewModel.latLng2
+        val location = locationViewModel.latLng
+        val friend = locationViewModel.latLng2
         GoogleMapView(location.value,friend.value)
 
         Column(
