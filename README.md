@@ -1,61 +1,96 @@
-# Project Name: MeetMe
-***Team:*** Finders || Keepers
-***Team members:*** Melody B. (Prarin Behdarvandian), Jardi Martinez Jordan, and Breanna Powell
+# :label: Project Title: MeetMe
+Authors: Prarin Behdarvandian (aka Melody), Jardi Martinez Jordan, and Breanna Powell
 
-# Navigation:
-[UI Files](MeetMe/app/src/main/java/com/example/meetme/ui)
-* ScreenConsent.kt - This page will display when User #2 gets a request to join a tracking session
+Description: Consent-based tracking app where two or more people can invite others to a live tracking session for a certain duration. Use cases include concerts, conferences, conventions, fairs, or other hourly or daily events. This app enables users to locate each other for that duration. Once the time is up, the tracking session ends, maintaining privacy to all users.
 
-# Final Paper
+## :movie_camera: Demo
 
-The final paper for the MeetMe app is in the following PDF file:
-- [MeetMe Final Paper Document](MeetMe_Final_Paper.pdf)
+To be added soon!
 
-# Basic Functionality ("Alpha"):
-- Map works to track one user’s current location
-    - GPS of device must be on to work correctly
-    - If the GPS is not on in the phone/emulator, the marker shows up as being set in Ghana (Lat - 0, Long - 0)
-- We figured out a way to do the handshake between the users, but we need to implement it 
-(see Work to be completed).
-- Jardi set up a database and an API to connect with the database
+## :rocket: Features
+* **Tracking Invite:** Send a deep link intent between two devices to invite USER #2 to join a tracking session
+* **Map:** Display a Google Map of the locations of the users who are in the same tracking session
 
-# Work to be completed:
-- Handshake between the 2 USERS:
-    - “Send Invitation” → Send USER 2 a deep link invitation via SMS
-        - The invitation text message will have a link that takes USER 2 to the consent screen.
-        - USER 1 goes to the Waiting for Consent screen
-        - USER 1’s location goes up to the database in the cloud
-        - We are going to use Intents for the navigation between screens during the handshake process because those allow us to open our app from a text messaging app without having to use push notifications and without having to use permissions for text messaging.
-    - “Consent” → When USER 2 clicks the consent button
-        - The URI (the identifier that tells us what screen to be on) needs to be parsed
-        - USER 2’s location is added to the database in the cloud
-        - USER 1 gets an SMS deep link that sends them to the map screen
-- On Map:
-    - Both users see both map markers
-    - Send location of user 1 to user 2 in a live format
-    - Permission to enable the GPS of the device in case it’s case it’s not enabled
-    - Getting a route between the two users
-    - Set up a timer for the duration of the session
-- Stop tracking
-    - Once the stop tracking button is clicked and a user decides to end the session, then BOTH need to stop tracking. The database needs to save the session information.
-    - The timer needs to stop
-- Input Validation
-    - Invariants
-        - Tracking session must be between 1 to 160 hours (1 week)
-        - Password Strength requirements
-        - Legitimate phone numbers
-            - Must look into area codes
-- Log in - maybe?
-- Contacts - maybe?
-- Secure the API key using the Secrets Gradle - maybe?
+## :bricks: Architecture Overview
 
-# Links to Documents
+To be added soon!
 
-Here is the document with the work to be completed:
-[Work to be completed](https://docs.google.com/document/d/1ENkjm07bQwUbZAubqQwTekEmvSXaW3hpHHSpGqWsBAs/edit#)
 
-Here is our updated plan:
-[Updated Project Plan](https://docs.google.com/document/d/1lmta3Ku5QuoJBZ1p7y5C__nRY3mDVDhxJSrwUcbpZao/edit?usp=sharing)
+<details id=1>
+<summary><h3>🛠️ Tech Stack</h3></summary>
 
-Here is our prototype document for Checkpoint 2, with the MVP features, breakdown of tasks, etc:
-[Prototype Document](https://docs.google.com/document/d/1092YUAJ7lwsJ6vis1JZsLcatlr38prw7zgCVGFQG3oY/edit?usp=sharing)
+### **Language & Platform**
+- **Kotlin** — primary development language  
+- **Android SDK** — modern Android APIs with backward compatibility
+
+### **UI Framework**
+- **Jetpack Compose** — declarative UI for building screens and components  
+- **Material 3 (Material You)** — theming, typography, icons, and UI components
+
+### **Navigation**
+- **Navigation Compose** — in-app navigation, route arguments, and deep link support
+
+### **State & Architecture**
+- **Kotlin Coroutines** — asynchronous operations and structured concurrency  
+- **StateFlow + collectAsState** — reactive UI state management  
+- **DataStore (Preferences)** — persistent storage for user settings (`SettingsDataStore`, `SettingsState`)
+
+### **Android System Integrations**
+- **Intents & URI Handling** — opening external apps and links  
+- **ContextCompat** — compatibility helpers for launching activities
+
+### **Tooling & Libraries**
+- **AndroidX Libraries** — modern support libraries across UI, navigation, and annotations  
+- **Gradle** — Android build system (Kotlin DSL or Groovy)
+
+</details>
+
+
+<details id=2>
+<summary><h3>:package: Installation / Build Instructions</h3></summary>
+
+To be added soon!
+
+</details>
+
+
+<details id=3>
+<summary><h3>:wrench: Configuration</h3></summary>
+
+To be added soon!
+
+</details>
+
+<details id=4>
+<summary><h3>:test_tube: Testing</h3></summary>
+
+To be added soon!
+
+</details>
+
+## :file_folder: Project Structure
+
+### Navigation:
+The main files are contained within this folder: [UI Files](MeetMe/app/src/main/java/com/example/meetme/ui)
+* [ScreenConsent.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenConsent.kt) - Displays request to User #2 to join a tracking session, asks for consent
+* [ScreenHelp.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenHelp.kt) - Help screen with information about the app
+* [ScreenMap.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenMap.kt) - Map navigation screen that displays locations while tracking is active
+* [ScreenSettings.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenSettings.kt) - Users can toggle and set preferences
+* [ScreenTrackingStart.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenTrackingStart.kt) - Displays that tracking has started
+* [ScreenTrackingStop.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenTrackingStop.kt) - Displays that tracking has ended
+* [ScreenWaitingForConsent.kt](MeetMe/app/src/main/java/com/example/meetme/ui/ScreenWaitingForConsent.kt) - Displays that a tracking invitation was sent to User #2
+
+## :handshake: Contributing Guidelines
+
+To be added soon!
+
+## :scroll: License
+
+To be added soon!
+
+## 🙋🏼 Contact / Maintainers
+
+To be added soon!
+
+## :star: Acknowledgments
+This started off as a Mobile Computing course assignment. Thank you to Professor Hansel Ong for your encouragement!
