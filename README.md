@@ -11,12 +11,58 @@ To be added soon!
 * **Tracking Invite:** Send a deep link intent between two devices to invite USER #2 to join a tracking session
 * **Map:** Display a Google Map of the locations of the users who are in the same tracking session
 
-## :bricks: Architecture Overview
-
-To be added soon!
-
-
 <details id=1>
+<summary><h3> :bricks: Architecture Overview </h3></summary>
+  
+1. 📩 Invitation & Deep Link Flow
+* User #1 → User #2 Invitation
+  * User #1 initiates a tracking request.
+  * The app generates a unique session token (e.g., UUID) and embeds it into a deep link URL.
+  * The app sends this URL to User #2 via SMS using the system SMS app.
+
+* Deep Link Handling
+  * When User #2 taps the link:
+    * Android launches the app via an intent filter registered for the deep link.
+    * The app extracts the session token from the URI.
+    * The UI presents a consent screen asking User #2 to join the tracking session.
+
+2. 🔐 Session Management
+* Consent & Session Start
+  * If User #2 accepts:
+    * The app notifies the backend (or peer‑to‑peer layer) that both users are ready.
+    * A tracking session is created with:
+      * A fixed duration
+      * A list of participants
+      * A shared session ID
+
+* Real‑Time Sync
+  * To be added soon!
+ 
+3. 📍 Location Services
+* Fine Location Access
+  * The app requests fine location permission (ACCESS_FINE_LOCATION).
+  * Manages permission state
+  * Subscribes to location updates
+  * Pushes location updates to the session backend
+
+* Location Update Strategy
+  * To be added soon!
+
+4. 🗺️ Map Rendering
+* Google Maps Integration
+  * The UI uses Google Maps to render:
+    * The live map
+    * Markers for each participant
+    * Camera position updates
+* Map UI Flow
+  * Each user’s location is observed and collected in Compose.
+  * The map displays:
+    * A marker for User #1
+    * A marker for User #2
+
+</details>
+
+<details id=2>
 <summary><h3>🛠️ Tech Stack</h3></summary>
 
 ### **Language & Platform**
@@ -46,7 +92,7 @@ To be added soon!
 </details>
 
 
-<details id=2>
+<details id=3>
 <summary><h3>:package: Installation / Build Instructions</h3></summary>
 
 To be added soon!
@@ -54,14 +100,14 @@ To be added soon!
 </details>
 
 
-<details id=3>
+<details id=4>
 <summary><h3>:wrench: Configuration</h3></summary>
 
 To be added soon!
 
 </details>
 
-<details id=4>
+<details id=5>
 <summary><h3>:test_tube: Testing</h3></summary>
 
 To be added soon!
